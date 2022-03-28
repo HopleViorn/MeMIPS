@@ -1,3 +1,5 @@
+`include "../includes/defines.v"
+
 module IF(
     input wire clk,
     input wire rst,

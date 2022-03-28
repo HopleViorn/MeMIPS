@@ -12,3 +12,9 @@
 `define op_ORI     `6'b001_101
 `define op_XORI     6'b001_110
 `define op_LUI      6'b001_111
+
+`define op_LB       6'b100_000
+`define op_LW       6'b100_011
+
+`define op_SB       6'b101_000
+`define op_SW       6'b101_011

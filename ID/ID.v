@@ -1,7 +1,7 @@
 `include "../includes/defines.v"
 module ID(
-//if
     input wire rst,
+//if
     input wire[31:0] pc,
     input wire[31:0] inst,
 

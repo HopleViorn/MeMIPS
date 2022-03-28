@@ -3,22 +3,36 @@ module mips(
     input wire rst
 );
 
-
-wire[31:0] fe_pc;
-fe fe0(
+//FE
+wire[31:0] fe_PC_inst_rom;
+IF IF0(
     .clk(clk),
     .rst(rst),
-    .pc(fe_pc)
+    .pc(fe_PC_inst_rom)
 );
-wire[31:0] id_inst;
+wire[31:0] inst_rom_INST_id;
 
 inst_rom inst_rom0(
-    .pc(fe_pc),
-    .inst(id_inst)
+    .pc(fe_PC_inst_rom),
+    .inst(inst_rom_INST_id)
 );
 
-id id0(
-    .pc(pc),
+//FE_ID
+wire[31:0] fe_PC_id;
+wire[31:0] fe_INST_id;
+
+IF_ID IF_ID0(
+    .clk(clk),
+    .rst(rst),
+    .fe_inst(inst_rom_INST_id),
+    .fe_pc(fe_PC_id),
+    .id_pc(fe_PC_id),
+    .id_inst(fe_INST_id)
+);
+
+//ID
+ID ID0(
+    .pc(fe_PC_id),
     .inst(id_inst),
     .rst(rst)
 );

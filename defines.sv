@@ -33,6 +33,6 @@ typedef struct packed {
     logic brunch_taken;
 } INST;
 
-
 `define true 1'b1
 `define false 1'b0
+

@@ -13,7 +13,7 @@ always_comb begin
     if(inst_in.inst[31:29]==3'b000) begin
         case(inst_in.inst[28:27])
             2'b00:begin//Special,RegImm
-                inst_out.is_brunch=`false;//TODO RegImm,Special
+                inst_out.is_brunch=`false;//TODO RegImm,Special(very important)
                 inst_out.brunch_taken=`false;
             end
             2'b01:begin//J 

@@ -1,3 +1,4 @@
+`define op_NOP 000_000
 
 `define op_J 000_010
 `define op_JAL 000_011
@@ -23,7 +24,15 @@ typedef struct packed {
     logic[31:0] pc;
 } PC;
 
+`define NOP '{32'b0,32'b0,1'b0,1'b0}
+
 typedef struct packed {
     PC pc;
     logic[31:0] inst;
+    logic is_brunch;
+    logic brunch_taken;
 } INST;
+
+
+`define true 1'b1
+`define false 1'b0

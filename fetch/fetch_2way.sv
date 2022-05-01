@@ -1,5 +1,5 @@
 `include "../defines.sv"
-module fetch(
+module fetch2(
     input PC pc,
     output PC next_pc,
 

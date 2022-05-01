@@ -1,5 +1,7 @@
-`include "defines.sv"
+`include "../defines.sv"
 module pc_select(
+    input PC_CHECK pc_fetch,
+    input PC_CHECK pc_execute,
     output logic[31:0] pc
 );
 

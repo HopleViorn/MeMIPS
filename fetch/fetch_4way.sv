@@ -1,7 +1,7 @@
 `include "../defines.sv"
-module fetch2(
+module fetch(
     input PC pc,
-    output PC pc_next,
+    output PC_CHECK pc_fetch,
     output INST[3:0] inst
 );
 
@@ -35,6 +35,7 @@ endgenerate
 
 logic mark=`false;
 always_comb begin
+    pc_fetch.enable=`true;
     for(int i=0;i<3;++i) begin
         if(inst_raw[i].brunch_taken==`true) begin
             for(int j=0;j<=i+1;j++) begin
@@ -43,7 +44,7 @@ always_comb begin
             for(int j=i+2;j<4;j++) begin
                 inst[j]=`NOP;
             end
-            pc_next=brunch_address[i];
+            pc_fetch.pc_new=brunch_address[i];
             mark=`true;
             break;
         end
@@ -54,12 +55,12 @@ always_comb begin
                 inst[i]=inst_raw[i];
             end
             inst[3]=`NOP;
-            pc_next=pc+12;
+            pc_fetch.pc_new=pc+12;
         end else begin
             for(int i=0;i<4;i++) begin
                 inst[i]=inst_raw[i];
             end
-            pc_next=pc+16;
+            pc_fetch.pc_new=pc+16;
         end
     end
 end

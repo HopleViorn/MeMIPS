@@ -25,7 +25,6 @@ generate
         );
     end   
 endgenerate
-
 always_comb begin
     if(inst_raw[0].is_brunch) begin
         inst[0]=inst_raw[0];

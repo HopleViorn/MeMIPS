@@ -52,8 +52,8 @@ typedef struct packed {
 
 //memory
 typedef struct packed {
-    logic[31:0] addr;
     logic[31:0] result;
+    logic[31:0] addr;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb
@@ -89,6 +89,7 @@ typedef struct packed {
     LLU_OP llu_op;
     ALU_OP alu_op;
     //mem
+    logic[31:0] mem_address_offest;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb
@@ -114,6 +115,7 @@ typedef struct packed {
     LLU_OP llu_op;
     ALU_OP alu_op;
     //mem
+    logic[31:0] mem_address_offest;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb

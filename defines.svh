@@ -1,6 +1,9 @@
 `ifndef nuclear
 `define nuclear
 
+`define true 1'b1
+`define false 1'b0
+
 `define op_NOP 000_000
 
 `define op_J 000_010
@@ -32,17 +35,6 @@ typedef struct packed {
     bool enable;
     PC pc_new;
 } PC_CHECK;
-
-typedef struct packed {
-    PC pc;
-    logic[31:0] inst;
-    bool is_brunch;
-    bool brunch_taken;
-} INST;
-`define NOP '{32'b0,32'b0,1'b0,1'b0}
-
-`define true 1'b1
-`define false 1'b0
 
 //commmit
 typedef struct packed {

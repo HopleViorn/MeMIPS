@@ -1,3 +1,6 @@
+`ifndef nuclear
+`define nuclear
+
 `define op_NOP 000_000
 
 `define op_J 000_010
@@ -19,9 +22,6 @@
 `define op_SW 101_011
 
 `define op_Secial 000_000
-
-`ifndef nuclear
-`define nuclear
 
 typedef logic[31:0] PC;
 typedef logic[31:0] REG_WIDTH;

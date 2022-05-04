@@ -1,5 +1,5 @@
 `include "../defines.svh"
-module bypass(
+module regfile(
     input logic clk,
     input bool [1:0] read_ena,
     input REG_ADDR [1:0] read_addr,

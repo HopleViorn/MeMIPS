@@ -1,4 +1,5 @@
 `include "../defines.svh"
+
 module FU(
     input FU_REQUIRE fu_require,
     output PC_CHECK pc_execute,
@@ -13,7 +14,7 @@ alu alu0(
     .c(alu_result)
 );
 PC pc_8;
-addr pc_addr(
+adder pc_adder(
     .a(fu_require.pc),
     .b(32'd8),
     .c(pc_8)
@@ -28,7 +29,7 @@ assign mem_require.result=fu_require.exe_type == brunch?pc_8:alu_result;
 assign mem_require.write_data=fu_require.num1;
 
 //lw reg1,imm(reg2)
-addr mem_addr_calc(
+adder mem_addr_calc(
     .a(fu_require.memory_addr_offset),
     .b(fu_require.num2),
     .c(mem_require.addr)

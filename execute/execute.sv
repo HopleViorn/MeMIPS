@@ -1,4 +1,5 @@
 `include "../defines.svh"
+
 module execute(
     input FU_REQUIRE[1:0] fu_require,
     output PC_CHECK pc_execute,

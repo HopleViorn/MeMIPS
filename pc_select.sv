@@ -1,5 +1,5 @@
 `include "defines.svh"
-module pc_select(
+odule pc_select(
 
     output logic[31:0] pc
 );

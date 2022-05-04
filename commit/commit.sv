@@ -3,7 +3,7 @@ module commmit(
     input CMT_REQUIRE cmt_require[1:0],
     output bool regfile_write_ena,
     output REG_ADDR regfile_write_addr,
-    output REG regfile_write_data
+    output REG_WIDTH regfile_write_data
 );
 
 always_comb begin

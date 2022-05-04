@@ -3,10 +3,10 @@ module bypass(
     input logic clk,
     input bool [1:0] read_ena,
     input REG_ADDR [1:0] read_addr,
-    output REG [1:0] read_data,
+    output REG_WIDTH [1:0] read_data,
     input bool write_ena,
     input REG_ADDR write_addr,
-    input REG write_data
+    input REG_WIDTH write_data
 );
 
 logic[31:0] regs [0:31];

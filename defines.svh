@@ -20,6 +20,8 @@
 
 `define op_Secial 000_000
 
+`ifndef nuclear
+`define nuclear
 
 typedef logic[31:0] PC;
 typedef logic[31:0] REG_WIDTH;
@@ -41,7 +43,6 @@ typedef struct packed {
 
 `define true 1'b1
 `define false 1'b0
-
 
 //commmit
 typedef struct packed {
@@ -140,3 +141,5 @@ typedef struct packed {
 } ISSUE_REQUIRE;
 
 //decode
+
+`endif

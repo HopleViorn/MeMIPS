@@ -2,7 +2,6 @@
 module fetch(
     input PC pc,
     output PC next_pc,
-
     output INST[1:0] inst
 );
 

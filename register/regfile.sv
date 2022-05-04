@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module bypass(
     input logic clk,
     input bool [1:0] read_ena,

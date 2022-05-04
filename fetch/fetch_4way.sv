@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module fetch(
     input PC pc,
     output PC_CHECK pc_fetch,

@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module commmit(
     input CMT_REQUIRE cmt_require[1:0],
     output bool regfile_write_ena,

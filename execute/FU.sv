@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module FU(
     input FU_REQUIRE fu_require,
     output PC_CHECK pc_execute,

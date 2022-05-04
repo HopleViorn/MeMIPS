@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module llu(
     input logic[31:0] a,
     input logic[31:0] b,

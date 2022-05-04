@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module decode(
 );
 

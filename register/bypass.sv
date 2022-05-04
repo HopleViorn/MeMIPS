@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module bypass(
     input REG_ADDR [1:0] issue_require,
     output REG_WIDTH [1:0] result,

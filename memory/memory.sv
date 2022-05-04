@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module memory(
     input MEM_REQUIRE[0:1] mem_require,
     output CMT_REQUIRE[0:1] cmt_require

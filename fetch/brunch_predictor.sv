@@ -1,4 +1,4 @@
-`include "../defines.sv"
+`include "../defines.svh"
 module brunch_predictor(
     input INST inst_in,
     output INST inst_out,

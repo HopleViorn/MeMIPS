@@ -7,13 +7,15 @@ module memory(
 bool write_ena=mem_require[0].write_ena|mem_require[1].write_ena;
 bool read_ena=mem_require[0].read_ena|mem_require[1].read_ena;
 logic[31:0] addr=(mem_require[0].write_ena||mem_require[0].read_ena)?mem_require[0].addr:mem_require[1].addr;
+REG write_data=mem_require[0].write_ena?mem_require[0].write_data:mem_require[1].write_data;
 REG cache_result;
 
 dcache dcache0(
     .write_ena(write_ena),
     .read_ena(read_ena),
+    .write_data(write_data),
     .write_addr(addr),
-    .read_num(cache_result)
+    .read_data(cache_result)
 );
 
 assign cmt_require[0].result=mem_require[0].read_ena||mem_require[1].read_ena?cache_result:mem_require[0].result;

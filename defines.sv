@@ -23,7 +23,7 @@
 
 typedef logic[31:0] PC;
 typedef logic[31:0] REG;
-typedef logic[5:0] REG_ADDR;
+typedef logic[4:0] REG_ADDR;
 typedef logic bool;
 
 typedef struct packed {
@@ -52,11 +52,12 @@ typedef struct packed {
 
 //memory
 typedef struct packed {
-    logic[31:0] result;
+    logic[31:0] write_data;
     logic[31:0] addr;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb
+    logic[31:0] result;
     bool write_reg_need;
     logic[31:0] write_reg_addr;
 } MEM_REQUIRE;
@@ -79,22 +80,30 @@ typedef enum logic[2:0] {
     alu_and
 } ALU_OP;
 
+typedef enum logic[1:0] { arithmatic,brunch,memory } EXE_TYPE;
+typedef enum logic[1:0] { b,j,jr } BRUNCH_TYPE;
 typedef struct packed {
+    EXE_TYPE exe_type;
+
+    //ari
+    ALU_OP alu_op;
     logic[31:0] num1;
     logic[31:0] num2;
-    bool is_brunch;
-    bool brunch_taken;
-    bool jr_type;
-    logic[31:0] brunch_address;
+    //brunch
+    PC pc;
+    BRUNCH_TYPE brunch_type;
+    PC predict_pc_addr;
+    bool predict_brunch_taken;
     LLU_OP llu_op;
-    ALU_OP alu_op;
+    //memory
+    logic[31:0] memory_addr_offset;
+
     //mem
-    logic[31:0] mem_address_offest;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb
     bool write_reg_need;
-    logic[31:0] write_reg_addr;
+    REG_ADDR write_reg_addr;
 } FU_REQUIRE;
 
 
@@ -102,25 +111,28 @@ typedef struct packed {
 typedef struct packed {
     PC pc;
     //is
-    logic[31:0] imm;
+    REG num1;
     bool num1_need;
-    logic[31:0] num1_addr;
+    REG_ADDR num1_addr;
+    REG num2;
     bool num2_need;
-    logic[31:0] num2_addr;
+    REG_ADDR num2_addr;
+
     //ex
-    bool is_brunch;
-    bool brunch_taken;
-    bool jr_type;
-    logic[31:0] brunch_address;
-    LLU_OP llu_op;
+    EXE_TYPE exe_type;
     ALU_OP alu_op;
+    BRUNCH_TYPE brunch_type;
+    PC predict_pc_addr;
+    bool predict_brunch_taken;
+    LLU_OP llu_op;
+    logic[31:0] memory_addr_offset;
+
     //mem
-    logic[31:0] mem_address_offest;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb
     bool write_reg_need;
-    logic[31:0] write_reg_addr;
+    REG_ADDR write_reg_addr;
 } ISSUE_QUEUE_ELEMENT;
 
 typedef struct packed {

@@ -4,7 +4,7 @@ module MeMIPS(
     input logic rst
 );
 
-MEM_REQUIRE[1:0] mem_require;
+MEM_REQUIRE [1:0]mem_require;
 execute execute0(
     .mem_require(mem_require)
 );

@@ -84,7 +84,10 @@ always_comb begin
                 pc_execute.pc_new=32'b0;
             end
         end
-
+        default: begin
+            pc_execute.enable=`false;
+            pc_execute.pc_new=32'b0;
+        end
         endcase
     end else begin
         pc_execute.enable=`false;

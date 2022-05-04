@@ -1,6 +1,6 @@
 `include "../defines.svh"
-module commmit(
-    input CMT_REQUIRE cmt_require[1:0],
+module commit(
+    input CMT_REQUIRE[1:0] cmt_require,
     output bool regfile_write_ena,
     output REG_ADDR regfile_write_addr,
     output REG_WIDTH regfile_write_data

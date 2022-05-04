@@ -14,6 +14,7 @@ always_comb begin
         llu_ge:c=(a>=b);
         llu_lt:c=(a<b);
         llu_le:c=(a<=b);
+        default c=`false;
     endcase
 end
 

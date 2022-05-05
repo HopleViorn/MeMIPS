@@ -43,6 +43,7 @@ typedef struct packed {
     logic[31:0] write_reg_addr;
 } CMT_REQUIRE;
 
+
 //memory
 typedef struct packed {
     logic[31:0] write_data;

@@ -37,6 +37,7 @@ issue issue0(
     .fu_require(is_out)
 );
 
+(*DONT_TOUCH="true"*)
 is_to_ex is_to_ex0(
     .clk(clk),
     .rst(rst),
@@ -45,11 +46,12 @@ is_to_ex is_to_ex0(
 );
 
 MEM_REQUIRE [1:0] ex_out,mem_in;
+(*DONT_TOUCH="true"*)
 execute execute0(
     .fu_require(ex_in),
     .mem_require(ex_out)
 );
-
+(*DONT_TOUCH="true"*)
 ex_to_mem ex_to_mem0(
     .clk(clk),
     .rst(rst),
@@ -58,10 +60,12 @@ ex_to_mem ex_to_mem0(
 );
 
 CMT_REQUIRE[1:0] mem_out,cmt_in;
+(*DONT_TOUCH="true"*)
 memory memory0(
     .mem_require(mem_in),
     .cmt_require(mem_out)
 );
+(*DONT_TOUCH="true"*)
 mem_to_cmt mem_to_cmt0(
     .clk(clk),
     .rst(rst),
@@ -72,13 +76,14 @@ mem_to_cmt mem_to_cmt0(
 REG_ADDR[1:0] regfile_write_addr;
 REG_WIDTH[1:0] regfile_write_data;
 bool[1:0] regfile_write_ena;
+(*DONT_TOUCH="true"*)
 commit commit0(
     .cmt_require(cmt_in),
     .regfile_write_ena(regfile_write_ena),
     .regfile_write_data(regfile_write_data),
     .regfile_write_addr(regfile_write_addr)
 );
-
+(*DONT_TOUCH="true"*)
 regfile regfile0(
     .clk(clk),
     .rst(rst),

@@ -23,12 +23,18 @@ FU_REQUIRE[1:0] is_out,ex_in;
 bool [1:0] regfile_read_ena;
 REG_ADDR [1:0] regfile_read_addr;
 REG_WIDTH [1:0] regfile_read_data;
+REG_WIDTH[3:0] bypass_result;
+SCORE_BOARD_DATA[3:0] score_board_data;
 issue issue0(
     .clk(clk),
     .rst(rst),
+
     .issue_require(out_data),
     .iq_size(iq_size),
     .iq_pop_number(iq_pop_number),
+
+    .score_board_data(score_board_data),
+    .bypass_result(bypass_result),
 
     .regfile_read_ena(regfile_read_ena),
     .regfile_read_addr(regfile_read_addr),
@@ -46,10 +52,12 @@ is_to_ex is_to_ex0(
 );
 
 MEM_REQUIRE [1:0] ex_out,mem_in;
+REG_WIDTH[1:0] execute_result;
 (*DONT_TOUCH="true"*)
 execute execute0(
     .fu_require(ex_in),
-    .mem_require(ex_out)
+    .mem_require(ex_out),
+    .execute_result(execute_result)
 );
 (*DONT_TOUCH="true"*)
 ex_to_mem ex_to_mem0(
@@ -60,10 +68,12 @@ ex_to_mem ex_to_mem0(
 );
 
 CMT_REQUIRE[1:0] mem_out,cmt_in;
+REG_WIDTH[1:0] memory_result;
 (*DONT_TOUCH="true"*)
 memory memory0(
     .mem_require(mem_in),
-    .cmt_require(mem_out)
+    .cmt_require(mem_out),
+    .memory_result(memory_result)
 );
 (*DONT_TOUCH="true"*)
 mem_to_cmt mem_to_cmt0(
@@ -76,12 +86,14 @@ mem_to_cmt mem_to_cmt0(
 REG_ADDR[1:0] regfile_write_addr;
 REG_WIDTH[1:0] regfile_write_data;
 bool[1:0] regfile_write_ena;
+REG_WIDTH[1:0] commit_result;
 (*DONT_TOUCH="true"*)
 commit commit0(
     .cmt_require(cmt_in),
     .regfile_write_ena(regfile_write_ena),
     .regfile_write_data(regfile_write_data),
-    .regfile_write_addr(regfile_write_addr)
+    .regfile_write_addr(regfile_write_addr),
+    .commit_result(commit_result)
 );
 (*DONT_TOUCH="true"*)
 regfile regfile0(
@@ -93,6 +105,14 @@ regfile regfile0(
     .write_ena(regfile_write_ena),
     .write_addr(regfile_write_addr),
     .write_data(regfile_write_data)
+);
+
+bypass bypass0(
+    .score_board_data(score_board_data),
+    .result(bypass_result),
+    .execute_result(execute_result),
+    .memory_result(memory_result),
+    .commit_result(commit_result)
 );
 
 endmodule

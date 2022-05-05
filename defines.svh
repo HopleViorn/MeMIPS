@@ -29,6 +29,7 @@
 typedef logic[31:0] PC;
 typedef logic[31:0] REG_WIDTH;
 typedef logic[4:0] REG_ADDR;
+typedef logic[3:0] IQ_ADDR;
 typedef logic bool;
 
 typedef struct packed {
@@ -105,6 +106,7 @@ typedef struct packed {
 
 
 //issue
+
 typedef struct packed {
     PC pc;
     //is

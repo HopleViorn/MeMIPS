@@ -5,7 +5,6 @@ module memory(
 );
 
 REG_WIDTH[1:0] cache_result;
-
 dcache dcache0(
     .write_ena({mem_require[1].mem_write_ena,mem_require[0].mem_write_ena}),
     .read_ena({mem_require[1].mem_read_ena,mem_require[0].mem_read_ena}),

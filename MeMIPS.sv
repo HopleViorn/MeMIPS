@@ -20,9 +20,9 @@ issue_queue issue_queue0(
 );
 
 FU_REQUIRE[1:0] is_out,ex_in;
-bool [1:0] regfile_read_ena;
-REG_ADDR [1:0] regfile_read_addr;
-REG_WIDTH [1:0] regfile_read_data;
+bool [3:0] regfile_read_ena;
+REG_ADDR [3:0] regfile_read_addr;
+REG_WIDTH [3:0] regfile_read_data;
 REG_WIDTH[3:0] bypass_result;
 SCORE_BOARD_DATA[3:0] score_board_data;
 issue issue0(

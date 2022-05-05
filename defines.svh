@@ -45,9 +45,11 @@ typedef struct packed {
 
 
 //memory
+typedef enum logic { wrd,byt } MEM_TYPE;
 typedef struct packed {
     logic[31:0] write_data;
     logic[31:0] addr;
+    MEM_TYPE mem_type;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb
@@ -93,6 +95,7 @@ typedef struct packed {
     logic[31:0] memory_addr_offset;
 
     //mem
+    MEM_TYPE mem_type;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb
@@ -122,6 +125,7 @@ typedef struct packed {
     logic[31:0] memory_addr_offset;
 
     //mem
+    MEM_TYPE mem_type;
     bool mem_write_ena;
     bool mem_read_ena;
     //wb

@@ -4,8 +4,41 @@ module MeMIPS(
     input logic rst
 );
 
+ISSUE_QUEUE_ELEMENT[1:0] out_data;
+logic[1:0] iq_pop_number;
+IQ_ADDR iq_size;
+IQ_ADDR iq_size_left;
+issue_queue issue_queue0(
+    .clk(clk),
+    .rst(rst),
+    //.in_data(),
+    //.in_data_number(),
+    .size_left(iq_size_left),
+    .size(iq_size),
+    .out_data_number(iq_pop_number),
+    .out_data(out_data)
+);
+
+FU_REQUIRE[1:0] is_out,ex_in;
+issue issue0(
+    .clk(clk),
+    .rst(rst),
+    .issue_require(out_data),
+    .iq_size(iq_size),
+    .iq_pop_number(iq_pop_number),
+    .fu_require(is_out)
+);
+
+is_to_ex is_to_ex0(
+    .clk(clk),
+    .rst(rst),
+    .is_in(is_out),
+    .ex_out(ex_in)
+);
+
 MEM_REQUIRE [1:0] ex_out,mem_in;
 execute execute0(
+    .fu_require(ex_in),
     .mem_require(ex_out)
 );
 

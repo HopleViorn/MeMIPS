@@ -77,7 +77,7 @@ typedef enum logic[2:0] {
     alu_and
 } ALU_OP;
 
-typedef enum logic[1:0] { arithmatic,brunch,memory } EXE_TYPE;
+typedef enum logic[1:0] { arithmatic,shift,brunch,memory } EXE_TYPE;
 typedef enum logic[1:0] { b,j,jr } BRUNCH_TYPE;
 typedef struct packed {
     EXE_TYPE exe_type;

@@ -5,7 +5,7 @@ module FU(
     output PC_CHECK pc_execute,
     output MEM_REQUIRE mem_require
 );
-//TODO:bypass
+//TODO:shift
 logic[31:0] alu_result;
 alu alu0(
     .a(fu_require.num1),

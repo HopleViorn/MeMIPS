@@ -106,7 +106,6 @@ typedef struct packed {
 
 
 //issue
-
 typedef struct packed {
     PC pc;
     //is
@@ -135,9 +134,14 @@ typedef struct packed {
     REG_ADDR write_reg_addr;
 } ISSUE_QUEUE_ELEMENT;
 
+//E-M-C
+
 typedef struct packed {
-    ISSUE_QUEUE_ELEMENT[3:0] decoded_inst;
-} ISSUE_REQUIRE;
+    bool is_pending;
+    logic line;
+    logic[2:0] position;
+    logic[2:0] accept_mask;
+} SCORE_BOARD_DATA;
 
 //decode
 

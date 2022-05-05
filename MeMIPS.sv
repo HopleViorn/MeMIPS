@@ -27,8 +27,23 @@ mem_to_cmt mem_to_cmt0(
     .mem_in(mem_out),
     .cmt_out(cmt_in)
 );
+
+REG_ADDR[1:0] regfile_write_addr;
+REG_WIDTH[1:0] regfile_write_data;
+bool[1:0] regfile_write_ena;
 commit commit0(
-    .cmt_require(cmt_in)
+    .cmt_require(cmt_in),
+    .regfile_write_ena(regfile_write_ena),
+    .regfile_write_data(regfile_write_data),
+    .regfile_write_addr(regfile_write_addr)
+);
+
+regfile regfile0(
+    .clk(clk),
+    .rst(rst),
+    .write_ena(regfile_write_ena),
+    .write_addr(regfile_write_addr),
+    .write_data(regfile_write_data)
 );
 
 endmodule

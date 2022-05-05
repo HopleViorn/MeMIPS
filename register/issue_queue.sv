@@ -4,8 +4,8 @@ module issue_queue(
     input logic rst,
     input ISSUE_QUEUE_ELEMENT[3:0] in_data,
     input logic[2:0] in_data_number,
-    output logic[3:0] size,
-    output logic[3:0] size_left,
+    output IQ_ADDR size,
+    output IQ_ADDR size_left,
     input logic[1:0] out_data_number,
     output ISSUE_QUEUE_ELEMENT[1:0] out_data
 );

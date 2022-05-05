@@ -20,12 +20,20 @@ issue_queue issue_queue0(
 );
 
 FU_REQUIRE[1:0] is_out,ex_in;
+bool [1:0] regfile_read_ena;
+REG_ADDR [1:0] regfile_read_addr;
+REG_WIDTH [1:0] regfile_read_data;
 issue issue0(
     .clk(clk),
     .rst(rst),
     .issue_require(out_data),
     .iq_size(iq_size),
     .iq_pop_number(iq_pop_number),
+
+    .regfile_read_ena(regfile_read_ena),
+    .regfile_read_addr(regfile_read_addr),
+    .regfile_read_data(regfile_read_data),
+
     .fu_require(is_out)
 );
 
@@ -74,6 +82,9 @@ commit commit0(
 regfile regfile0(
     .clk(clk),
     .rst(rst),
+    .read_ena(regfile_read_ena),
+    .read_addr(regfile_read_addr),
+    .read_data(regfile_read_data),
     .write_ena(regfile_write_ena),
     .write_addr(regfile_write_addr),
     .write_data(regfile_write_data)

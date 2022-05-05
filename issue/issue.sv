@@ -7,6 +7,10 @@ module issue(
     input IQ_ADDR iq_size,
     output logic[1:0] iq_pop_number,
 
+    output bool [1:0] regfile_read_ena,
+    output REG_ADDR [1:0] regfile_read_addr,
+    input REG_WIDTH [1:0] regfile_read_data,
+
     output FU_REQUIRE[1:0] fu_require
 );
 
@@ -23,7 +27,8 @@ score_board score_board0(
     .data_in(score_board_write_data),
     .data_out(score_board_read_data)
 );
-
+//LL
+//BD
 always_comb begin
 
 end

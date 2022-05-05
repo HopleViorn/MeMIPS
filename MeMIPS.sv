@@ -1,4 +1,5 @@
 `include "defines.svh"
+`define debug
 module MeMIPS(
     input logic clk,
     input logic rst
@@ -8,6 +9,9 @@ ISSUE_QUEUE_ELEMENT[1:0] out_data;
 logic[1:0] iq_pop_number;
 IQ_ADDR iq_size;
 IQ_ADDR iq_size_left;
+`ifdef debug
+(*DONT_TOUCH="true"*)
+`endif
 issue_queue issue_queue0(
     .clk(clk),
     .rst(rst),
@@ -25,6 +29,9 @@ REG_ADDR [3:0] regfile_read_addr;
 REG_WIDTH [3:0] regfile_read_data;
 REG_WIDTH[3:0] bypass_result;
 SCORE_BOARD_DATA[3:0] score_board_data;
+`ifdef debug
+(*DONT_TOUCH="true"*)
+`endif
 issue issue0(
     .clk(clk),
     .rst(rst),
@@ -43,7 +50,9 @@ issue issue0(
     .fu_require(is_out)
 );
 
+`ifdef debug
 (*DONT_TOUCH="true"*)
+`endif
 is_to_ex is_to_ex0(
     .clk(clk),
     .rst(rst),
@@ -53,13 +62,17 @@ is_to_ex is_to_ex0(
 
 MEM_REQUIRE [1:0] ex_out,mem_in;
 REG_WIDTH[1:0] execute_result;
+`ifdef debug
 (*DONT_TOUCH="true"*)
+`endif
 execute execute0(
     .fu_require(ex_in),
     .mem_require(ex_out),
     .execute_result(execute_result)
 );
+`ifdef debug
 (*DONT_TOUCH="true"*)
+`endif
 ex_to_mem ex_to_mem0(
     .clk(clk),
     .rst(rst),
@@ -69,13 +82,17 @@ ex_to_mem ex_to_mem0(
 
 CMT_REQUIRE[1:0] mem_out,cmt_in;
 REG_WIDTH[1:0] memory_result;
+`ifdef debug
 (*DONT_TOUCH="true"*)
+`endif
 memory memory0(
     .mem_require(mem_in),
     .cmt_require(mem_out),
     .memory_result(memory_result)
 );
+`ifdef debug
 (*DONT_TOUCH="true"*)
+`endif
 mem_to_cmt mem_to_cmt0(
     .clk(clk),
     .rst(rst),
@@ -87,7 +104,9 @@ REG_ADDR[1:0] regfile_write_addr;
 REG_WIDTH[1:0] regfile_write_data;
 bool[1:0] regfile_write_ena;
 REG_WIDTH[1:0] commit_result;
+`ifdef debug
 (*DONT_TOUCH="true"*)
+`endif
 commit commit0(
     .cmt_require(cmt_in),
     .regfile_write_ena(regfile_write_ena),
@@ -95,7 +114,9 @@ commit commit0(
     .regfile_write_addr(regfile_write_addr),
     .commit_result(commit_result)
 );
+`ifdef debug
 (*DONT_TOUCH="true"*)
+`endif
 regfile regfile0(
     .clk(clk),
     .rst(rst),

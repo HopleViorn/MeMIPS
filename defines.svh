@@ -137,7 +137,6 @@ typedef struct packed {
 //E-M-C
 
 typedef struct packed {
-    bool is_pending;
     logic line;
     logic[2:0] position;
     logic[2:0] accept_mask;

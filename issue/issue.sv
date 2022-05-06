@@ -20,21 +20,24 @@ module issue(
     output FU_REQUIRE[1:0] fu_require
 );
 
-bool [3:0] score_board_write_ena;
-REG_ADDR [3:0] score_board_addr={
+REG_ADDR [3:0] score_board_read_addr={
     issue_require[0].num1_addr,
     issue_require[0].num2_addr,
     issue_require[1].num1_addr,
     issue_require[1].num2_addr
 };
-SCORE_BOARD_DATA [3:0] score_board_write_data;
 SCORE_BOARD_DATA [3:0] score_board_read_data;
+
+bool [1:0] score_board_write_ena;
+SCORE_BOARD_DATA [1:0] score_board_write_data;
+REG_ADDR[1:0] score_board_write_addr;
 
 score_board score_board0(
     .clk(clk),
     .rst(rst),
     .write_ena(score_board_write_ena),
-    .addr(score_board_addr),
+    .write_addr(score_board_write_addr),
+    .read_addr(score_board_addr),
     .data_in(score_board_write_data),
     .data_out(score_board_read_data)
 );
@@ -112,6 +115,7 @@ bool first_ready=num1_ready[0]&num2_ready[0];
 bool second_ready=num1_ready[1]&num2_ready[1];
 
 `define nop '{default:0};
+SCORE_BOARD_DATA ndt='{default:0};
 always_comb begin
     if(iq_size==2'd0||
        first_ready==`false||
@@ -120,6 +124,9 @@ always_comb begin
         fu_require[0]=`nop;
         fu_require[1]=`nop;
         iq_pop_number=2'd0;
+        score_board_write_ena={`false,`false};
+        score_board_write_data={ndt,ndt};
+        score_board_write_addr={5'b0,5'b0};
     end else if(
         (iq_size==2'd1&&first_ready==`true)||
         (iq_size==2'd2&&(
@@ -143,9 +150,28 @@ always_comb begin
         fu_require[0].mem_read_ena=issue_require[0].mem_read_ena;
         fu_require[0].write_reg_need=issue_require[0].write_reg_need;
         fu_require[0].write_reg_addr=issue_require[0].write_reg_addr;
+        if(issue_require[0].write_reg_need) begin
+            score_board_write_ena[0]=`true;
+            score_board_write_data[0]='{
+                line:0,
+                position:3'b100,
+                accept_mask:issue_require[0].accept_mask
+            };
+            score_board_write_addr[0]=issue_require[0].write_reg_addr;
+        end else begin
+            score_board_write_ena[0]=`false;
+            score_board_write_data[0]=ndt;
+            score_board_write_addr[0]=5'b0;
+        end
 
         fu_require[1]=`nop;
+        score_board_write_ena[1]=`false;
+        score_board_write_data[1]=ndt;
+        score_board_write_addr[1]=5'b0;
+
         iq_pop_number=2'd1;
+
+
     end else if(
         iq_size==2'd2&&(
             (first_ready==`true&&second_ready==`true)||
@@ -167,6 +193,19 @@ always_comb begin
         fu_require[0].mem_read_ena=issue_require[0].mem_read_ena;
         fu_require[0].write_reg_need=issue_require[0].write_reg_need;
         fu_require[0].write_reg_addr=issue_require[0].write_reg_addr;    
+        if(issue_require[0].write_reg_need) begin
+            score_board_write_ena[0]=`true;
+            score_board_write_data[0]='{
+                line:0,
+                position:3'b100,
+                accept_mask:issue_require[0].accept_mask
+            };
+            score_board_write_addr[0]=issue_require[0].write_reg_addr;
+        end else begin
+            score_board_write_ena[0]=`false;
+            score_board_write_data[0]=ndt;
+            score_board_write_addr[0]=5'b0;
+        end
 
         fu_require[1].num1=num1_pre_ready[1];
         fu_require[1].num2=num2_pre_ready[1];
@@ -183,11 +222,23 @@ always_comb begin
         fu_require[1].mem_read_ena=issue_require[1].mem_read_ena;
         fu_require[1].write_reg_need=issue_require[1].write_reg_need;
         fu_require[1].write_reg_addr=issue_require[1].write_reg_addr;
-
+        if(issue_require[1].write_reg_need) begin
+            score_board_write_ena[1]=`true;
+            score_board_write_data[1]='{
+                line:1,
+                position:3'b100,
+                accept_mask:issue_require[1].accept_mask
+            };
+            score_board_write_addr[1]=issue_require[1].write_reg_addr;
+        end else begin
+            score_board_write_ena[1]=`false;
+            score_board_write_data[1]=ndt;
+            score_board_write_addr[1]=5'b0;
+        end
         iq_pop_number=2'd2;
     end
 end
-
+//TODO: change score_board
 
 `undef nop
 

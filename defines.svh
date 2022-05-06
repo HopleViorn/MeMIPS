@@ -115,6 +115,7 @@ typedef struct packed {
     REG_WIDTH num2;
     bool num2_need;
     REG_ADDR num2_addr;
+    logic[2:0] accept_mask;
 
     //ex
     EXE_TYPE exe_type;

@@ -7,7 +7,7 @@ module MeMIPS(
 
 ISSUE_QUEUE_ELEMENT[1:0] out_data;
 logic[1:0] iq_pop_number;
-IQ_ADDR iq_size;
+logic[1:0] iq_size;
 IQ_ADDR iq_size_left;
 `ifdef debug
 (*DONT_TOUCH="true"*)
@@ -18,7 +18,8 @@ issue_queue issue_queue0(
     //.in_data(),
     //.in_data_number(),
     .size_left(iq_size_left),
-    .size(iq_size),
+    //.size(iq_size),
+    .iq_size(iq_size),
     .out_data_number(iq_pop_number),
     .out_data(out_data)
 );

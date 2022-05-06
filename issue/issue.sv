@@ -238,7 +238,6 @@ always_comb begin
         iq_pop_number=2'd2;
     end
 end
-//TODO: change score_board
 
 `undef nop
 

@@ -143,6 +143,9 @@ regfile regfile0(
     .write_data(regfile_write_data)
 );
 
+`ifdef debug
+(*DONT_TOUCH="true"*)
+`endif
 bypass bypass0(
     .score_board_data(score_board_data),
     .result(bypass_result),

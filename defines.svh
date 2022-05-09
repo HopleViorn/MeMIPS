@@ -136,7 +136,6 @@ typedef struct packed {
 } ISSUE_QUEUE_ELEMENT;
 
 //E-M-C
-
 typedef struct packed {
     logic line;
     logic[2:0] position;
@@ -144,5 +143,10 @@ typedef struct packed {
 } SCORE_BOARD_DATA;
 
 //decode
+typedef struct packed {
+    PC pc;
+    logic[31:0] inst_in;
+    bool is_valid;
+} DECODE_REQUIRE;
 
 `endif

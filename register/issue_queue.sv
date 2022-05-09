@@ -5,6 +5,7 @@ module issue_queue(
     input ISSUE_QUEUE_ELEMENT[3:0] in_data,
     input logic[2:0] in_data_number,
     output logic[1:0] iq_size,
+    output logic[2:0] iq_size_left,
     output IQ_ADDR size,
     output IQ_ADDR size_left,
     input logic[1:0] out_data_number,
@@ -74,5 +75,6 @@ always_ff @(posedge clk) begin
 end
 
 assign iq_size=(size>=2?2:size);
+assign iq_size_left=(size_left>=4?4:size_left);
 
 endmodule

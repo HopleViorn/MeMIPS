@@ -6,21 +6,34 @@ module MeMIPS(
 );
 bool rst=~rst_n;
 
+
+ISSUE_QUEUE_ELEMENT[3:0] in_data;
+logic[2:0] in_data_number;
+IQ_ADDR iq_size_left;
+`ifdef debug
+(*DONT_TOUCH="true"*)
+`endif
+decode decode0(
+    //.decode_require(),
+    .issue_queue_push_number(in_data_number),
+    .issue_queue_element(in_data),
+    .iq_size_left(iq_size_left)
+);
+
 ISSUE_QUEUE_ELEMENT[1:0] out_data;
 logic[1:0] iq_pop_number;
 logic[1:0] iq_size;
-IQ_ADDR iq_size_left;
 `ifdef debug
 (*DONT_TOUCH="true"*)
 `endif
 issue_queue issue_queue0(
     .clk(clk),
     .rst_n(rst_n),
-    //.in_data(),
-    //.in_data_number(),
-    .size_left(iq_size_left),
+    .in_data(in_data),
+    .in_data_number(in_data_number),
     //.size(iq_size),
     .iq_size(iq_size),
+    .iq_size_left(iq_size_left),
     .out_data_number(iq_pop_number),
     .out_data(out_data)
 );

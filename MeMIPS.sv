@@ -1,11 +1,10 @@
 `include "defines.svh"
-//`define debug
+`define debug
 module MeMIPS(
     input logic clk,
     input bool rst_n
 );
 bool rst=~rst_n;
-
 
 ISSUE_QUEUE_ELEMENT[3:0] in_data;
 logic[2:0] in_data_number;

@@ -1,5 +1,5 @@
 `include "defines.svh"
-`define debug
+//`define debug
 module MeMIPS(
     input logic clk,
     input bool rst_n
@@ -31,7 +31,6 @@ issue_queue issue_queue0(
     .rst_n(rst_n),
     .in_data(in_data),
     .in_data_number(in_data_number),
-    //.size(iq_size),
     .iq_size(iq_size),
     .iq_size_left(iq_size_left),
     .out_data_number(iq_pop_number),

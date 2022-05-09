@@ -4,4 +4,6 @@ module decoder(
     output ISSUE_QUEUE_ELEMENT issue_queue_element
 );
 
+assign issue_queue_element='{default:0};
+
 endmodule

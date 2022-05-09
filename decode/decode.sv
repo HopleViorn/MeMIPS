@@ -8,12 +8,18 @@ module decode(
     input logic[2:0] iq_size_left
 );
 
-var i;
+ISSUE_QUEUE_ELEMENT[3:0] tmp;
+
+genvar i;
 generate
-    decoder decoderx(
-        .decode_require(decode_require[i]),
-        .issue_queue_element(issue_queue_element[i])
-    );
+    for(i=0;i<4;i++) begin
+        decoder decoderx(
+            .decode_require(decode_require[i]),
+            .issue_queue_element(tmp[i])
+        );
+    end
 endgenerate
+
+assign issue_queue_element=tmp;
 
 endmodule

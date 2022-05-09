@@ -2,8 +2,9 @@
 `define debug
 module MeMIPS(
     input logic clk,
-    input logic rst
+    input bool rst_n
 );
+bool rst=~rst_n;
 
 ISSUE_QUEUE_ELEMENT[1:0] out_data;
 logic[1:0] iq_pop_number;
@@ -14,7 +15,7 @@ IQ_ADDR iq_size_left;
 `endif
 issue_queue issue_queue0(
     .clk(clk),
-    .rst(rst),
+    .rst_n(rst_n),
     //.in_data(),
     //.in_data_number(),
     .size_left(iq_size_left),
@@ -35,7 +36,7 @@ SCORE_BOARD_DATA[3:0] score_board_data;
 `endif
 issue issue0(
     .clk(clk),
-    .rst(rst),
+    .rst_n(rst_n),
 
     .issue_require(out_data),
     .iq_size(iq_size),
@@ -56,7 +57,7 @@ issue issue0(
 `endif
 is_to_ex is_to_ex0(
     .clk(clk),
-    .rst(rst),
+    .rst_n(rst_n),
     .is_in(is_out),
     .ex_out(ex_in)
 );
@@ -76,7 +77,7 @@ execute execute0(
 `endif
 ex_to_mem ex_to_mem0(
     .clk(clk),
-    .rst(rst),
+    .rst_n(rst_n),
     .ex_in(ex_out),
     .mem_out(mem_in)
 );
@@ -96,7 +97,7 @@ memory memory0(
 `endif
 mem_to_cmt mem_to_cmt0(
     .clk(clk),
-    .rst(rst),
+    .rst_n(rst_n),
     .mem_in(mem_out),
     .cmt_out(cmt_in)
 );
@@ -120,7 +121,7 @@ commit commit0(
 `endif
 regfile regfile0(
     .clk(clk),
-    .rst(rst),
+    .rst_n(rst_n),
     .read_ena(regfile_read_ena),
     .read_addr(regfile_read_addr),
     .read_data(regfile_read_data),

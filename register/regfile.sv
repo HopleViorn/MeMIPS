@@ -1,7 +1,7 @@
 `include "../defines.svh"
 module regfile(
     input logic clk,
-    input logic rst,
+    input bool rst_n,
     input bool [3:0] read_ena,
     input REG_ADDR [3:0] read_addr,
     output REG_WIDTH [3:0] read_data,
@@ -9,6 +9,7 @@ module regfile(
     input REG_ADDR[1:0] write_addr,
     input REG_WIDTH[1:0] write_data
 );
+bool rst=~rst_n;
 
 logic[31:0] regs [0:31];
 

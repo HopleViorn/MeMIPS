@@ -1,7 +1,7 @@
 `include "../defines.svh"
 module score_board(
     input logic clk,
-    input logic rst,
+    input bool rst_n,
     
     input bool [1:0] write_ena,
     input REG_ADDR [1:0] write_addr,
@@ -10,7 +10,7 @@ module score_board(
     input REG_ADDR [3:0] read_addr,
     output SCORE_BOARD_DATA [3:0] data_out
 );
-
+bool rst=~rst_n;
 SCORE_BOARD_DATA[31:0] score_board_ram;
 
 always_comb begin

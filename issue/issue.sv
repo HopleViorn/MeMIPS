@@ -1,7 +1,7 @@
 `include "../defines.svh"
 module issue(
     input logic clk,
-    input logic rst,
+    input logic rst_n,
 
     //issue queue
     input ISSUE_QUEUE_ELEMENT [1:0] issue_require,
@@ -19,6 +19,7 @@ module issue(
     //ex
     output FU_REQUIRE[1:0] fu_require
 );
+bool rst=~rst_n;
 
 REG_ADDR [3:0] score_board_read_addr={
     issue_require[0].num1_addr,
@@ -34,7 +35,7 @@ REG_ADDR[1:0] score_board_write_addr;
 
 score_board score_board0(
     .clk(clk),
-    .rst(rst),
+    .rst_n(rst_n),
     .write_ena(score_board_write_ena),
     .write_addr(score_board_write_addr),
     .read_addr(score_board_addr),

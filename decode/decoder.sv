@@ -12,7 +12,7 @@ logic[31:0] imm_signed_extension={{16{imm[15]}},imm};
 
 always_comb begin 
     case(op_code)
-        `op_ORI:begin//op,rs,rt,imm (rt=reg[rs]+sign[imm])
+        `op_ORI:begin//op,rs,rt,imm (rt=reg[rs]|sign[imm])
         is_o.num1_need=`true;
         is_o.num1=32'b0;
         is_o.num1_addr=rs;
@@ -23,6 +23,28 @@ always_comb begin
         
         is_o.exe_type=arithmatic;
         is_o.alu_op=alu_or;
+        is_o.brunch_type=nbc;
+        is_o.llu_op=llu_nop;
+        is_o.memory_addr_offset=32'b0;
+
+        is_o.mem_write_ena=`false;
+        is_o.mem_read_ena=`false;
+        is_o.mem_type=wrd;
+
+        is_o.write_reg_need=`true;
+        is_o.write_reg_addr=rt;
+        end
+        `op_ADDIU:begin//op,rs,rt,imm (rt=reg[rs]+sign[imm])
+        is_o.num1_need=`true;
+        is_o.num1=32'b0;
+        is_o.num1_addr=rs;
+        is_o.num2_need=`false;
+        is_o.num2=imm_signed_extension;
+        is_o.num2_addr=5'b0;
+        is_o.accept_mask=3'b111;
+        
+        is_o.exe_type=arithmatic;
+        is_o.alu_op=alu_add;
         is_o.brunch_type=nbc;
         is_o.llu_op=llu_nop;
         is_o.memory_addr_offset=32'b0;

@@ -33,7 +33,7 @@ if_to_id if_to_id0(
 
 ISSUE_QUEUE_ELEMENT[3:0] in_data;
 logic[2:0] in_data_number;
-IQ_ADDR iq_size_left;
+logic[2:0] iq_size_left;
 `ifdef debug
 (*DONT_TOUCH="true"*)
 `endif

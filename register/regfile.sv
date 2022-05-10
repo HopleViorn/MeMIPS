@@ -34,7 +34,7 @@ always_ff @(posedge clk) begin
     end else begin
         for(int i=0;i<2;i++) begin
             if(write_ena[i]==`true) begin
-                if(write_addr[i]!==5'b0) begin
+                if(write_addr[i]!=5'b0) begin
                     regs[write_addr[i]]<=write_data[i];
                 end
             end

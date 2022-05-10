@@ -66,7 +66,8 @@ typedef enum logic[2:0] {
     llu_gt,
     llu_ge,
     llu_lt,
-    llu_le
+    llu_le,
+    llu_nop
 } LLU_OP;
 typedef enum logic[2:0] { 
     alu_add,
@@ -78,7 +79,7 @@ typedef enum logic[2:0] {
 } ALU_OP;
 
 typedef enum logic[1:0] { arithmatic,shift,brunch,memory } EXE_TYPE;
-typedef enum logic[1:0] { b,j,jr } BRUNCH_TYPE;
+typedef enum logic[1:0] { b,j,jr,nbc } BRUNCH_TYPE;
 typedef struct packed {
     EXE_TYPE exe_type;
 
@@ -145,8 +146,11 @@ typedef struct packed {
 //decode
 typedef struct packed {
     PC pc;
-    logic[31:0] inst_in;
+    logic[31:0] inst;
     bool is_valid;
+    //brunch predict
+    PC predict_pc_addr;
+    bool predict_brunch_taken;
 } DECODE_REQUIRE;
 
 `endif

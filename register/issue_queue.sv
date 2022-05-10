@@ -2,6 +2,8 @@
 module issue_queue(
     input logic clk,
     input logic rst_n,
+    input bool stall,
+    input bool flash,
     input ISSUE_QUEUE_ELEMENT[3:0] in_data,
     input logic[2:0] in_data_number,
     output logic[1:0] iq_size,
@@ -29,14 +31,14 @@ always_comb begin
 end
 
 always_ff @(posedge clk) begin
-    if(rst==`true) begin
+    if(rst==`true||flash==`true) begin
         for(int i=0;i<4;i++) begin
             head_pointer[i]<=i;
         end
         for(int i=0;i<16;i++) begin
             issue_queue[i]<=nop;
         end
-    end else begin
+    end else if(stall==`false)begin
         case(in_data_number)
             1: begin
                 for(int i=0;i<1;i++) begin
@@ -74,21 +76,21 @@ always_ff @(posedge clk) begin
     end
 end
 always_ff @(posedge clk) begin
-    if(rst==`true)begin
+    if(rst==`true||flash==`true)begin
         for(int i=0;i<2;i++)begin
             tail_pointer[i]=i;
         end
-    end else begin
+    end else if(stall==`false)begin
         tail_pointer[0]=tail_pointer[0]+out_data_number;
         tail_pointer[1]=tail_pointer[1]+out_data_number;
     end
 end
 
 always_ff @(posedge clk) begin
-    if(rst==`true) begin
+    if(rst==`true||flash==`true) begin
         size=0;
         size_left=16;
-    end else begin
+    end else if(stall==`false)begin
         size<=size+(in_data_number-out_data_number);
         size_left<=size_left+(out_data_number-in_data_number);
     end

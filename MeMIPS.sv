@@ -8,6 +8,8 @@ bool rst=~rst_n;
 
 PC pc_fetch;
 pc_select pc_select0(
+    .clk(clk),
+    .rst_n(rst_n),
     .pc(pc_fetch)
 );
 
@@ -16,7 +18,7 @@ DECODE_REQUIRE[3:0] decode_require;
 (*DONT_TOUCH="true"*)
 `endif
 fetch fetch0(
-    .pc(fetch_pc),
+    .pc(pc_fetch),
     .decode_require(decode_require)
 );
 

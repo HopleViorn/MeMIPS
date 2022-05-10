@@ -4,7 +4,7 @@ module icache(
     output REG_WIDTH [3:0] inst
 );
 
-REG_WIDTH rom[65535:0];
+REG_WIDTH rom[127:0];
 
 always_comb begin
     inst[0]=rom[pc[17:2]];

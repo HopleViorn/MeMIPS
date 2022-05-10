@@ -13,13 +13,22 @@ pc_select pc_select0(
     .pc(pc_fetch)
 );
 
-DECODE_REQUIRE[3:0] decode_require;
+DECODE_REQUIRE[3:0] if_out,id_in;
 `ifdef debug
 (*DONT_TOUCH="true"*)
 `endif
 fetch fetch0(
     .pc(pc_fetch),
-    .decode_require(decode_require)
+    .decode_require(if_out)
+);
+`ifdef debug
+(*DONT_TOUCH="true"*)
+`endif
+if_to_id if_to_id0(
+    .clk(clk),
+    .rst_n(rst_n),
+    .if_in(if_out),
+    .id_out(id_in)
 );
 
 ISSUE_QUEUE_ELEMENT[3:0] in_data;
@@ -29,7 +38,7 @@ IQ_ADDR iq_size_left;
 (*DONT_TOUCH="true"*)
 `endif
 decode decode0(
-    .decode_require(decode_require),
+    .decode_require(id_in),
     .issue_queue_push_number(in_data_number),
     .issue_queue_element(in_data),
     .iq_size_left(iq_size_left)

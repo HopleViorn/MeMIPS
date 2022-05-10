@@ -58,11 +58,11 @@ always_comb begin
         end
         default:begin
             // is_o='{default:0};
-            is_o.num1_need=`true;
+            is_o.num1_need=`false;
             is_o.num1=32'b0;
-            is_o.num1_addr=rs;
+            is_o.num1_addr=5'b0;
             is_o.num2_need=`false;
-            is_o.num2=imm_signed_extension;
+            is_o.num2=32'b0;
             is_o.num2_addr=5'b0;
             is_o.accept_mask=3'b111;
             
@@ -76,8 +76,8 @@ always_comb begin
             is_o.mem_read_ena=`false;
             is_o.mem_type=wrd;
 
-            is_o.write_reg_need=`true;
-            is_o.write_reg_addr=rt;
+            is_o.write_reg_need=`false;
+            is_o.write_reg_addr=5'b0;
         end
 
     endcase

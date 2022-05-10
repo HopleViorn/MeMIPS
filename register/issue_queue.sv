@@ -29,49 +29,69 @@ always_comb begin
 end
 
 always_ff @(posedge clk) begin
-    case(in_data_number)
-        1: begin
-            for(int i=0;i<1;i++) begin
-                issue_queue[head_pointer[i]]<=in_data[i];
-            end
-            for(int i=0;i<4;i++) begin
-                head_pointer[i]<=head_pointer[i]+1;
-            end
+    if(rst==`true) begin
+        for(int i=0;i<4;i++) begin
+            head_pointer[i]<=i;
         end
-        2:begin
-            for(int i=0;i<2;i++) begin
-                issue_queue[head_pointer[i]]<=in_data[i];
-            end
-            for(int i=0;i<4;i++) begin
-                head_pointer[i]<=head_pointer[i]+2;
-            end
+        for(int i=0;i<16;i++) begin
+            issue_queue[i]<=nop;
         end
-        3:begin
-            for(int i=0;i<3;i++) begin
-                issue_queue[head_pointer[i]]<=in_data[i];
+    end else begin
+        case(in_data_number)
+            1: begin
+                for(int i=0;i<1;i++) begin
+                    issue_queue[head_pointer[i]]<=in_data[i];
+                end
+                for(int i=0;i<4;i++) begin
+                    head_pointer[i]<=head_pointer[i]+1;
+                end
             end
-            for(int i=0;i<4;i++) begin
-                head_pointer[i]<=head_pointer[i]+3;
+            2:begin
+                for(int i=0;i<2;i++) begin
+                    issue_queue[head_pointer[i]]<=in_data[i];
+                end
+                for(int i=0;i<4;i++) begin
+                    head_pointer[i]<=head_pointer[i]+2;
+                end
             end
-        end
-        4:begin
-            for(int i=0;i<4;i++) begin
-                issue_queue[head_pointer[i]]<=in_data[i];
+            3:begin
+                for(int i=0;i<3;i++) begin
+                    issue_queue[head_pointer[i]]<=in_data[i];
+                end
+                for(int i=0;i<4;i++) begin
+                    head_pointer[i]<=head_pointer[i]+3;
+                end
             end
-            for(int i=0;i<4;i++) begin
-                head_pointer[i]<=head_pointer[i]+4;
-            end
-        end//0:do nothing
-    endcase
+            4:begin
+                for(int i=0;i<4;i++) begin
+                    issue_queue[head_pointer[i]]<=in_data[i];
+                end
+                for(int i=0;i<4;i++) begin
+                    head_pointer[i]<=head_pointer[i]+4;
+                end
+            end//0:do nothing
+        endcase
+    end
 end
 always_ff @(posedge clk) begin
-    tail_pointer[0]=tail_pointer[0]+out_data_number;
-    tail_pointer[1]=tail_pointer[1]+out_data_number;
+    if(rst==`true)begin
+        for(int i=0;i<2;i++)begin
+            tail_pointer[i]=i;
+        end
+    end else begin
+        tail_pointer[0]=tail_pointer[0]+out_data_number;
+        tail_pointer[1]=tail_pointer[1]+out_data_number;
+    end
 end
 
 always_ff @(posedge clk) begin
-    size=size+(in_data_number-out_data_number);
-    size_left=16-size;
+    if(rst==`true) begin
+        size=0;
+        size_left=16;
+    end else begin
+        size<=size+(in_data_number-out_data_number);
+        size_left<=size_left+(out_data_number-in_data_number);
+    end
 end
 
 assign iq_size=(size>=2?2:size);

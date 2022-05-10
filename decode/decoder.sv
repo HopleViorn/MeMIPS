@@ -4,7 +4,6 @@ module decoder(
     output ISSUE_QUEUE_ELEMENT is_o
 );
 
-assign issue_queue_element='{default:0};
 logic[5:0] op_code=decode_require.inst[31:26];
 logic[4:0] rs=decode_require.inst[25:21];
 logic[4:0] rt=decode_require.inst[20:16];

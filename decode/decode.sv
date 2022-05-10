@@ -15,7 +15,7 @@ generate
     for(i=0;i<4;i++) begin
         decoder decoderx(
             .decode_require(decode_require[i]),
-            .issue_queue_element(tmp[i])
+            .is_out(tmp[i])
         );
     end
 endgenerate

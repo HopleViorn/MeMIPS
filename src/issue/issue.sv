@@ -43,7 +43,7 @@ score_board score_board0(
     .stall(stall),
     .write_ena(score_board_write_ena),
     .write_addr(score_board_write_addr),
-    .read_addr(score_board_addr),
+    .read_addr(score_board_read_addr),
     .data_in(score_board_write_data),
     .data_out(score_board_read_data)
 );

@@ -123,8 +123,8 @@ SCORE_BOARD_DATA[3:0] score_board_data;
 issue issue0(
     .clk(clk),
     .rst_n(rst_n),
-    .stall(stall_to_pc),
-    //.flash()
+    .stall(stall_to_is),
+    .flash(`false),
 
     .issue_require(out_data),
     .iq_size(iq_size),

@@ -9,6 +9,7 @@ wire[4:0] rs=decode_require.inst[25:21];
 wire[4:0] rt=decode_require.inst[20:16];
 wire[15:0] imm=decode_require.inst[15:0];
 wire[31:0] imm_signed_extension={{16{imm[15]}},imm};
+assign is_o.pc=decode_require.pc;
 
 always_comb begin 
     case(op_code)

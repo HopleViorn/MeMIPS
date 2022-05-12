@@ -12,7 +12,7 @@ icache icache0(
 
 always_comb begin
     for(int i=0;i<4;i++) begin
-        decode_require[i].pc=pc+i;
+        decode_require[i].pc=pc+i*4;
         decode_require[i].inst=inst[i];
         decode_require[i].is_valid=`true;
         decode_require[i].predict_pc_addr=32'b0;

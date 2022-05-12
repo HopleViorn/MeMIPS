@@ -24,23 +24,21 @@ end
 always_ff @(posedge clk) begin
     if(rst==`true||flash==`true) begin
         for(int i=0;i<32;i++) begin
-            score_board_ram[i]='{default:0};
+            score_board_ram[i]<='{default:0};
         end
     end else if(stall==`false) begin
-        if(write_ena==`true) begin
+        if(write_ena!=2'b00) begin
             for(int i=0;i<32;i++) begin
-                case(i) 
-                    write_addr[0]: 
-                        score_board_ram[i]=data_in[0];
-                    write_addr[1]:
-                        score_board_ram[i]=data_in[1];
+                case(i)
+                    write_addr[0]: score_board_ram[i]<=data_in[0];
+                    write_addr[1]:score_board_ram[i]<=data_in[1];
                     default:
-                        score_board_ram[i].position=score_board_ram[i].position>>1;
+                        score_board_ram[i].position<=score_board_ram[i].position>>1;
                 endcase
             end
         end else begin
             for(int i=0;i<32;i++)begin
-                score_board_ram[i].position=score_board_ram[i].position>>1;
+                score_board_ram[i].position<=score_board_ram[i].position>>1;
             end
         end
     end

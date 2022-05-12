@@ -15,6 +15,7 @@ always_comb begin
             score_board_data[i].position[2]: result[i]=execute_result[score_board_data[i].line];
             score_board_data[i].position[1]: result[i]=memory_result[score_board_data[i].line];
             score_board_data[i].position[0]: result[i]=commit_result[score_board_data[i].line];
+            default:result[i]=32'b0;
         endcase
     end
 end

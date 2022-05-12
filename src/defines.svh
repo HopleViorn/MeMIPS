@@ -41,7 +41,7 @@ typedef struct packed {
 typedef struct packed {
     logic[31:0] result;
     bool write_reg_need;
-    logic[31:0] write_reg_addr;
+    REG_ADDR write_reg_addr;
 } CMT_REQUIRE;
 
 
@@ -56,7 +56,7 @@ typedef struct packed {
     //wb
     logic[31:0] result;
     bool write_reg_need;
-    logic[31:0] write_reg_addr;
+    REG_ADDR write_reg_addr;
 } MEM_REQUIRE;
 
 //execute

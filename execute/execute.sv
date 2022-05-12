@@ -22,7 +22,7 @@ FU FU1(
 assign mem_require[0]=test[0];
 assign mem_require[1]=test[1];
 
-assign execute_result[0]=mem_require[0].result;
-assign execute_result[1]=mem_require[1].result;
+assign execute_result[0]=test[0].result;
+assign execute_result[1]=test[1].result;
 
 endmodule

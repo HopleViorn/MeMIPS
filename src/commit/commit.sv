@@ -12,8 +12,8 @@ module commit(
 always_comb begin
     if(cmt_require[0].write_reg_addr==cmt_require[1].write_reg_addr) begin
         regfile_write_ena={`false,`true};
-        regfile_write_addr={32'b0,cmt_require[0].write_reg_addr};
-        regfile_write_data={32'b0,cmt_require[0].result};
+        regfile_write_addr={32'b0,cmt_require[1].write_reg_addr};
+        regfile_write_data={32'b0,cmt_require[1].result};
     end else begin
         regfile_write_ena={cmt_require[1].write_reg_need,cmt_require[0].write_reg_need};
         regfile_write_addr={cmt_require[1].write_reg_addr,cmt_require[0].write_reg_addr};

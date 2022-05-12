@@ -29,12 +29,18 @@ always_ff @(posedge clk) begin
     end else if(stall==`false) begin
         if(write_ena!=2'b00) begin
             for(int i=0;i<32;i++) begin
-                case(i)
-                    write_addr[0]: score_board_ram[i]<=data_in[0];
-                    write_addr[1]:score_board_ram[i]<=data_in[1];
-                    default:
-                        score_board_ram[i].position<=score_board_ram[i].position>>1;
-                endcase
+                if(write_ena==2'b11&&write_addr[0]==write_addr[1]) begin
+                    if(i==write_addr[1])
+                        score_board_ram[i]<=data_in[1];
+                    else score_board_ram[i].position<=score_board_ram[i].position>>1;
+                end else begin
+                    case(i)
+                        write_addr[0]: score_board_ram[i]<=data_in[0];
+                        write_addr[1]: score_board_ram[i]<=data_in[1];
+                        default:
+                            score_board_ram[i].position<=score_board_ram[i].position>>1;
+                    endcase
+                end
             end
         end else begin
             for(int i=0;i<32;i++)begin

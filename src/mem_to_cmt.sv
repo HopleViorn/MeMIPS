@@ -9,7 +9,7 @@ module mem_to_cmt(
     output CMT_REQUIRE[1:0] cmt_out
 );
 
-bool rst=~rst_n;
+wire rst=~rst_n;
 always_ff @( posedge clk  ) begin 
     if(rst==`true||flash==`true) begin
         cmt_out<='{default:0};

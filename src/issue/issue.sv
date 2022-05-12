@@ -21,9 +21,10 @@ module issue(
     //ex
     output FU_REQUIRE[1:0] fu_require
 );
-bool rst=~rst_n;
+wire rst=~rst_n;
 
-REG_ADDR [3:0] score_board_read_addr={
+REG_ADDR [3:0] score_board_read_addr;
+assign score_board_read_addr={
     issue_require[0].num1_addr,
     issue_require[0].num2_addr,
     issue_require[1].num1_addr,
@@ -116,8 +117,8 @@ end
    //TODO: SL in-line bypass
 */
 
-bool first_ready=num1_ready[0]&num2_ready[0];
-bool second_ready=num1_ready[1]&num2_ready[1];
+wire first_ready=num1_ready[0]&num2_ready[0];
+wire second_ready=num1_ready[1]&num2_ready[1];
 
 `define nop '{default:0};
 SCORE_BOARD_DATA ndt='{default:0};

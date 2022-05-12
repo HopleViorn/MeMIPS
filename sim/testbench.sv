@@ -1,4 +1,4 @@
-`timescale 1ps/1ps
+`timescale 1ns/1ps
 
 `include "../src/defines.svh"
 `default_nettype none
@@ -27,7 +27,6 @@ initial begin
     rst_n<=1;
     @(posedge clk);
     repeat(2) @(posedge clk);
-    $finish(2);
 end
 
 endmodule

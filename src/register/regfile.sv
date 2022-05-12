@@ -9,7 +9,7 @@ module regfile(
     input REG_ADDR[1:0] write_addr,
     input REG_WIDTH[1:0] write_data
 );
-bool rst=~rst_n;
+wire rst=~rst_n;
 
 logic[31:0] regs [0:31];
 

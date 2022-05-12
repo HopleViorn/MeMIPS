@@ -9,7 +9,7 @@ module is_to_ex(
     output FU_REQUIRE[1:0] ex_out
 );
 
-bool rst=~rst_n;
+wire rst=~rst_n;
 always_ff @( posedge clk  ) begin 
     if(rst==`true||flash==`true) begin
         ex_out<='{default:0};

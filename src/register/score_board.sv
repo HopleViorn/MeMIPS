@@ -12,7 +12,7 @@ module score_board(
     input REG_ADDR [3:0] read_addr,
     output SCORE_BOARD_DATA [3:0] data_out
 );
-bool rst=~rst_n;
+wire rst=~rst_n;
 SCORE_BOARD_DATA[31:0] score_board_ram;
 
 always_comb begin

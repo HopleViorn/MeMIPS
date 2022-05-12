@@ -8,7 +8,7 @@ module if_to_id(
     output DECODE_REQUIRE[3:0] id_out
 );
 
-bool rst=~rst_n;
+wire rst=~rst_n;
 always @(posedge clk) begin
     if(rst==`true||flash==`true) begin
         for(int i=0;i<4;i++) begin

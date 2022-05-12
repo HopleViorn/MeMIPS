@@ -6,7 +6,7 @@ module pc_select(
     output PC pc
 );
 
-bool rst=~rst_n;
+wire rst=~rst_n;
 
 always_ff @(posedge clk) begin
     if(rst==`true) begin

@@ -4,11 +4,11 @@ module decoder(
     output ISSUE_QUEUE_ELEMENT is_o
 );
 
-logic[5:0] op_code=decode_require.inst[31:26];
-logic[4:0] rs=decode_require.inst[25:21];
-logic[4:0] rt=decode_require.inst[20:16];
-logic[15:0] imm=decode_require.inst[15:0];
-logic[31:0] imm_signed_extension={{16{imm[15]}},imm};
+wire[5:0] op_code=decode_require.inst[31:26];
+wire[4:0] rs=decode_require.inst[25:21];
+wire[4:0] rt=decode_require.inst[20:16];
+wire[15:0] imm=decode_require.inst[15:0];
+wire[31:0] imm_signed_extension={{16{imm[15]}},imm};
 
 always_comb begin 
     case(op_code)

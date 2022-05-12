@@ -13,7 +13,7 @@ module issue_queue(
     input logic[1:0] out_data_number,
     output ISSUE_QUEUE_ELEMENT[1:0] out_data
 );
-bool rst=~rst_n;
+wire rst=~rst_n;
 
 IQ_ADDR[3:0] head_pointer;
 IQ_ADDR[1:0] tail_pointer;

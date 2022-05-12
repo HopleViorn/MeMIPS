@@ -4,7 +4,7 @@ module MeMIPS(
     input logic clk,
     input bool rst_n
 );
-bool rst=~rst_n;
+wire rst=~rst_n;
 
 bool stall_from_decode;
 bool stall_from_issue;

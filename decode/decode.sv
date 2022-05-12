@@ -35,7 +35,7 @@ always_comb begin
         issue_queue_push_number=0;
     end else begin
         stall_from_decode=`false;
-        issue_queue_push_number=valid_inst;44
+        issue_queue_push_number=valid_inst;
     end
 end
 

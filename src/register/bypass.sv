@@ -1,6 +1,6 @@
 `include "../defines.svh"
 module bypass(
-    SCORE_BOARD_DATA [3:0] score_board_data,
+    input SCORE_BOARD_DATA [3:0] score_board_data,
 
     output REG_WIDTH [3:0] result,
 

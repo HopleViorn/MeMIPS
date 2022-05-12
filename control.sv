@@ -24,8 +24,37 @@ module control(
 
 always_comb begin
     priority case(`true)
-        stall_from_memory:  begin
+        stall_from_memory:  begin//cache miss
+            stall_to_pc=`false;
+            stall_to_if_id=`false;
+            stall_to_id_is=`false;
+            stall_to_is=`true;
+            stall_to_is_ex=`true;
+            stall_to_ex_mem=`true;
+            stall_to_mem_cmt=`false;
             
+            flash_to_if_id=`false;
+            flash_to_id_is=`false;
+            flash_to_iq=`false;
+            flash_to_is_ex=`false;
+            flash_to_ex_mem=`false;
+            flash_to_mem_cmt=`true;
+        end
+        stall_from_decode: begin//iq is full
+            stall_to_pc=`true;
+            stall_to_if_id=`true;
+            stall_to_id_is=`true;
+            stall_to_is=`false;
+            stall_to_is_ex=`false;
+            stall_to_ex_mem=`false;
+            stall_to_mem_cmt=`false;
+            
+            flash_to_if_id=`false;
+            flash_to_id_is=`false;
+            flash_to_iq=`false;
+            flash_to_is_ex=`false;
+            flash_to_ex_mem=`false;
+            flash_to_mem_cmt=`false;
         end
         default:begin
             stall_to_pc=`false;

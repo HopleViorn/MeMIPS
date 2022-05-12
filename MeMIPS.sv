@@ -6,10 +6,55 @@ module MeMIPS(
 );
 bool rst=~rst_n;
 
+bool stall_from_decode;
+bool stall_from_issue;
+bool stall_from_execute;
+bool flash_from_execute;
+bool stall_from_memory;
+
+bool stall_to_pc;
+bool stall_to_if_id;
+bool stall_to_id_is;//make push number=0
+bool stall_to_is;//score board
+bool stall_to_is_ex;//make pop number=0    
+bool stall_to_ex_mem;//
+bool stall_to_mem_cmt;//
+
+bool flash_to_if_id;
+bool flash_to_id_is;
+bool flash_to_iq;
+bool flash_to_is_ex;
+bool flash_to_ex_mem;
+bool flash_to_mem_cmt;
+control control0(
+      stall_from_decode,
+      stall_from_issue,
+      stall_from_execute,
+      flash_from_execute,
+      stall_from_memory,
+
+      stall_to_pc,
+      stall_to_if_id,
+      stall_to_id_is,//make push number=0
+      stall_to_is,//score board
+      stall_to_is_ex,//make pop number=0    
+      stall_to_ex_mem,//
+      stall_to_mem_cmt,//
+
+      flash_to_if_id,
+      flash_to_id_is,
+      flash_to_iq,
+      flash_to_is_ex,
+      flash_to_ex_mem,
+      flash_to_mem_cmt
+);
+
+
 PC pc_fetch;
 pc_select pc_select0(
     .clk(clk),
     .rst_n(rst_n),
+    .stall(stall_to_pc),
     .pc(pc_fetch)
 );
 
@@ -27,6 +72,8 @@ fetch fetch0(
 if_to_id if_to_id0(
     .clk(clk),
     .rst_n(rst_n),
+    .stall(stall_to_if_id),
+    .flash(flash_to_if_id),
     .if_in(if_out),
     .id_out(id_in)
 );
@@ -41,7 +88,8 @@ decode decode0(
     .decode_require(id_in),
     .issue_queue_push_number(in_data_number),
     .issue_queue_element(in_data),
-    .iq_size_left(iq_size_left)
+    .iq_size_left(iq_size_left),
+    .stall_from_decode(stall_from_decode)
 );
 
 ISSUE_QUEUE_ELEMENT[1:0] out_data;
@@ -53,6 +101,8 @@ logic[1:0] iq_size;
 issue_queue issue_queue0(
     .clk(clk),
     .rst_n(rst_n),
+    .flash(flash_to_iq),
+    //.stall,
     .in_data(in_data),
     .in_data_number(in_data_number),
     .iq_size(iq_size),
@@ -73,6 +123,8 @@ SCORE_BOARD_DATA[3:0] score_board_data;
 issue issue0(
     .clk(clk),
     .rst_n(rst_n),
+    .stall(stall_to_pc),
+    //.flash()
 
     .issue_require(out_data),
     .iq_size(iq_size),
@@ -94,6 +146,8 @@ issue issue0(
 is_to_ex is_to_ex0(
     .clk(clk),
     .rst_n(rst_n),
+    .stall(stall_to_is_ex),
+    .flash(flash_to_is_ex),
     .is_in(is_out),
     .ex_out(ex_in)
 );
@@ -114,6 +168,8 @@ execute execute0(
 ex_to_mem ex_to_mem0(
     .clk(clk),
     .rst_n(rst_n),
+    .stall(stall_to_ex_mem),
+    .flash(flash_to_ex_mem),
     .ex_in(ex_out),
     .mem_out(mem_in)
 );
@@ -134,6 +190,8 @@ memory memory0(
 mem_to_cmt mem_to_cmt0(
     .clk(clk),
     .rst_n(rst_n),
+    .stall(stall_to_mem_cmt),
+    .flash(flash_to_mem_cmt),
     .mem_in(mem_out),
     .cmt_out(cmt_in)
 );

@@ -15,7 +15,6 @@ module issue(
     input REG_WIDTH[3:0] bypass_result,
 
     //regfile
-    output bool [3:0] regfile_read_ena,
     output REG_ADDR [3:0] regfile_read_addr,
     input REG_WIDTH [3:0] regfile_read_data,
     //ex
@@ -23,12 +22,18 @@ module issue(
 );
 wire rst=~rst_n;
 
+assign regfile_read_addr={
+    issue_require[1].num2_addr,
+    issue_require[1].num1_addr,
+    issue_require[0].num2_addr,
+    issue_require[0].num1_addr
+};
 REG_ADDR [3:0] score_board_read_addr;
 assign score_board_read_addr={
-    issue_require[0].num1_addr,
-    issue_require[0].num2_addr,
+    issue_require[1].num2_addr,
     issue_require[1].num1_addr,
-    issue_require[1].num2_addr
+    issue_require[0].num2_addr,
+    issue_require[0].num1_addr
 };
 SCORE_BOARD_DATA [3:0] score_board_read_data;
 
@@ -57,21 +62,25 @@ assign score_board_data[3]=score_board_read_data[3];
 
 bool [1:0] num1_ready,num2_ready;
 REG_WIDTH[1:0] num1_pre_ready,num2_pre_ready;
-
+logic[2:0]  test[1:0]={0,0};
 always_comb begin
     for(int i=0;i<2;i++) begin
         if(issue_require[i].num1_need==`false) begin//imm
             num1_ready[i]=`true;
             num1_pre_ready[i]=issue_require[i].num1;
+            test[i]=1;
         end else if(i==1&&issue_require[0].write_reg_need&&issue_require[1].num1_addr==issue_require[0].write_reg_addr) begin
             num1_ready[i]=`false;
             num1_pre_ready[i]=32'b0;
             //TODO:SL bypass
+            test[i]=2;
         end else if(score_board_read_data[i*2].position==3'b0) begin//read from regfile
+        test[i]=3;
             num1_ready[i]=`true;
-            num1_pre_ready[i]=regfile_read_data[i*2];
+            num1_pre_ready[i]=regfile_read_data[2*i];
         end else begin
-            if(score_board_read_data[i*2].position&score_board_read_data[i*2].accept_mask!=3'b0) begin//read from bypass
+            test[i]=4;
+            if((score_board_read_data[i*2].position&score_board_read_data[i*2].accept_mask)!=3'b0) begin//read from bypass
                 num1_ready[i]=`true;
                 num1_pre_ready[i]=bypass_result[i*2];
             end else begin//not ready
@@ -90,7 +99,7 @@ always_comb begin
             num2_ready[i]=`true;
             num2_pre_ready[i]=regfile_read_data[i*2+1];
         end else begin
-            if(score_board_read_data[i*2+1].position&score_board_read_data[i*2+1].accept_mask!=3'b0) begin//read from bypass
+            if((score_board_read_data[i*2+1].position&score_board_read_data[i*2+1].accept_mask)!=3'b0) begin//read from bypass
                 num2_ready[i]=`true;
                 num2_pre_ready[i]=bypass_result[i*2+1];
             end else begin//not ready

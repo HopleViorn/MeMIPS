@@ -2,7 +2,6 @@
 module regfile(
     input logic clk,
     input bool rst_n,
-    input bool [3:0] read_ena,
     input REG_ADDR [3:0] read_addr,
     output REG_WIDTH [3:0] read_data,
     input bool[1:0] write_ena,
@@ -15,13 +14,9 @@ logic[31:0] regs [0:31];
 
 always_comb begin
     for(int i=0;i<4;i++) begin
-        if(read_ena[i]==`true) begin
-            if(read_addr[i]==5'b0) read_data[i]=32'b0;
-            else begin 
-                read_data[i]=regs[read_addr];
-            end
-        end else begin
-            read_data[i]=32'b0;
+        if(read_addr[i]==5'b0) read_data[i]=32'b0;
+        else begin 
+            read_data[i]=regs[read_addr[i]];
         end
     end
 end

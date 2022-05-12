@@ -112,7 +112,6 @@ issue_queue issue_queue0(
 );
 
 FU_REQUIRE[1:0] is_out,ex_in;
-bool [3:0] regfile_read_ena;
 REG_ADDR [3:0] regfile_read_addr;
 REG_WIDTH [3:0] regfile_read_data;
 REG_WIDTH[3:0] bypass_result;
@@ -133,7 +132,6 @@ issue issue0(
     .score_board_data(score_board_data),
     .bypass_result(bypass_result),
 
-    .regfile_read_ena(regfile_read_ena),
     .regfile_read_addr(regfile_read_addr),
     .regfile_read_data(regfile_read_data),
 
@@ -218,7 +216,6 @@ commit commit0(
 regfile regfile0(
     .clk(clk),
     .rst_n(rst_n),
-    .read_ena(regfile_read_ena),
     .read_addr(regfile_read_addr),
     .read_data(regfile_read_data),
     .write_ena(regfile_write_ena),

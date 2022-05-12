@@ -1,5 +1,6 @@
 `include "../defines.svh"
 module memory(
+    input logic clk,
     input MEM_REQUIRE[1:0] mem_require,
     output CMT_REQUIRE[1:0] cmt_require,
     output REG_WIDTH[1:0] memory_result,
@@ -9,6 +10,7 @@ module memory(
 REG_WIDTH[1:0] cache_result;
 bool[1:0] read_valid;
 dcache dcache0(
+    .clk(clk),
     .write_ena({mem_require[1].mem_write_ena,mem_require[0].mem_write_ena}),
     .read_ena({mem_require[1].mem_read_ena,mem_require[0].mem_read_ena}),
     .mem_type({mem_require[1].mem_type,mem_require[0].mem_type}),

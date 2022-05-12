@@ -180,6 +180,7 @@ REG_WIDTH[1:0] memory_result;
 (*DONT_TOUCH="true"*)
 `endif
 memory memory0(
+    .clk(clk),
     .mem_require(mem_in),
     .cmt_require(mem_out),
     .memory_result(memory_result),

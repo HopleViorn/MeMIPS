@@ -182,7 +182,8 @@ REG_WIDTH[1:0] memory_result;
 memory memory0(
     .mem_require(mem_in),
     .cmt_require(mem_out),
-    .memory_result(memory_result)
+    .memory_result(memory_result),
+    .stall_from_memory(stall_from_memory)
 );
 `ifdef debug
 (*DONT_TOUCH="true"*)

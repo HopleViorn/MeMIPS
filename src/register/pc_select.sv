@@ -12,7 +12,7 @@ always_ff @(posedge clk) begin
     if(rst==`true) begin
         pc<=32'b0;
     end else if(stall==`false)begin
-        pc<=pc+4;
+        pc<=pc+16;
     end
 end
 

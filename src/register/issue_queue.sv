@@ -2,19 +2,22 @@
 module issue_queue(
     input logic clk,
     input logic rst_n,
-    input bool stall,
     input bool flash,
     input ISSUE_QUEUE_ELEMENT[3:0] in_data,
     input logic[2:0] in_data_number,
     output logic[1:0] iq_size,
     output logic[2:0] iq_size_left,
-    output IQ_ADDR size,
-    output IQ_ADDR size_left,
+    
     input logic[1:0] out_data_number,
     output ISSUE_QUEUE_ELEMENT[1:0] out_data
 );
-wire rst=~rst_n;
 
+
+wire rst=~rst_n;
+wire stall=`false;
+
+logic[4:0] size;
+logic[4:0] size_left;
 IQ_ADDR[3:0] head_pointer;
 IQ_ADDR[1:0] tail_pointer;
 ISSUE_QUEUE_ELEMENT [15:0] issue_queue;
@@ -78,21 +81,21 @@ end
 always_ff @(posedge clk) begin
     if(rst==`true||flash==`true)begin
         for(int i=0;i<2;i++)begin
-            tail_pointer[i]=i;
+            tail_pointer[i]<=i;
         end
     end else if(stall==`false)begin
-        tail_pointer[0]=tail_pointer[0]+out_data_number;
-        tail_pointer[1]=tail_pointer[1]+out_data_number;
+        tail_pointer[0]<=tail_pointer[0]+out_data_number;
+        tail_pointer[1]<=tail_pointer[1]+out_data_number;
     end
 end
 
 always_ff @(posedge clk) begin
     if(rst==`true||flash==`true) begin
-        size=0;
-        size_left=16;
+        size<=0;
+        size_left<=16;
     end else if(stall==`false)begin
         size<=size+(in_data_number-out_data_number);
-        size_left<=size_left+(out_data_number-in_data_number);
+        size_left<=size_left-in_data_number+out_data_number;
     end
 end
 

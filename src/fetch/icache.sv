@@ -13,13 +13,14 @@ always_comb begin
     rom[3]=32'h24040000;
     rom[4]=32'h24050001;
     rom[5]=32'h24060008;
+    for(int i=6;i<128;i++) rom[i]=32'h0;
 end
 
 always_comb begin
     inst[0]=rom[pc[10:2]];
-    inst[1]=rom[pc[10:2]+4];
-    inst[2]=rom[pc[10:2]+8];
-    inst[3]=rom[pc[10:2]+12];
+    inst[1]=rom[pc[10:2]+1];
+    inst[2]=rom[pc[10:2]+2];
+    inst[3]=rom[pc[10:2]+3];
 end
 
 endmodule

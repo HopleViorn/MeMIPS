@@ -79,7 +79,7 @@ always_comb begin
             if(fu_require.predict_brunch_taken==`false||fu_require.predict_pc_addr!=fu_require.num1) begin
                 pc_execute.enable=`true;
                 pc_execute.pc_new=fu_require.num1;
-            end begin
+            end else begin
                 pc_execute.enable=`false;
                 pc_execute.pc_new=32'b0;
             end

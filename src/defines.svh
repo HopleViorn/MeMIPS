@@ -25,7 +25,20 @@
 `define op_SW 6'b101_011
 
 `define op_Special 6'b000_000
-    `define op_Special_ADDU 6'b100001
+    `define op_Special_SLL 6'b000_000
+    `define op_Special_SRL 6'b000_010
+    `define op_Special_SRA 6'b000_011
+    `define op_Special_SLLV 6'b000_100
+    `define op_Special_SRLV 6'b000_110
+    `define op_Special_SRAV 6'b000_111
+
+    `define op_Special_JR 6'b001_000
+    `define op_Special_JALR 6'b001_001
+
+    `define op_Special_ADDU 6'b100_001
+    `define op_Special_AND 6'b100_100
+    `define op_Special_OR 6'b100_101
+    `define op_Special_XOR 6'b100_110
 
 typedef logic[31:0] PC;
 typedef logic[31:0] REG_WIDTH;

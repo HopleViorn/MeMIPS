@@ -7,6 +7,7 @@ module decode(
     output logic[2:0] issue_queue_push_number,
     input logic[2:0] iq_size_left,
 
+    input bool flash,
     output bool stall_from_decode
 );
 
@@ -24,7 +25,10 @@ endgenerate
 assign issue_queue_element=tmp;
 wire[2:0] valid_inst=decode_require[0].valid_number;
 always_comb begin;
-    if(valid_inst>iq_size_left) begin
+    if(flash==`true) begin
+        stall_from_decode=`false;
+        issue_queue_push_number=0;
+    end else if(valid_inst>iq_size_left) begin
         stall_from_decode=`true;
         issue_queue_push_number=0;
     end else begin

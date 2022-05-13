@@ -149,7 +149,9 @@ always_comb begin
             (issue_require[1].exe_type==brunch)
             )
         )
-    )begin
+    ) begin
+        fu_require[0].pc=issue_require[0].pc;
+
         fu_require[0].num1=num1_pre_ready[0];
         fu_require[0].num2=num2_pre_ready[0];
 
@@ -193,6 +195,8 @@ always_comb begin
             (issue_require[0].exe_type==brunch&&second_ready==`true)
         )
     ) begin
+        fu_require[0].pc=issue_require[0].pc;
+
         fu_require[0].num1=num1_pre_ready[0];
         fu_require[0].num2=num2_pre_ready[0];
 
@@ -221,6 +225,8 @@ always_comb begin
             score_board_write_data[0]=ndt;
             score_board_write_addr[0]=5'b0;
         end
+
+        fu_require[1].pc=issue_require[1].pc;
 
         fu_require[1].num1=num1_pre_ready[1];
         fu_require[1].num2=num2_pre_ready[1];

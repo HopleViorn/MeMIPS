@@ -57,6 +57,28 @@ always_comb begin
         is_o.write_reg_need=`true;
         is_o.write_reg_addr=rt;
         end
+        `op_J:begin//j imm28
+        is_o.num1_need=`false;
+        is_o.num1=32'b0;
+        is_o.num1_addr=5'b0;
+        is_o.num2_need=`false;
+        is_o.num2=32'b0;
+        is_o.num2_addr=5'b0;
+        is_o.accept_mask=3'b111;
+        
+        is_o.exe_type=brunch;
+        is_o.alu_op=alu_nop;
+        is_o.brunch_type=j;
+        is_o.llu_op=llu_nop;
+        is_o.memory_addr_offset=32'b0;
+
+        is_o.mem_write_ena=`false;
+        is_o.mem_read_ena=`false;
+        is_o.mem_type=wrd;
+
+        is_o.write_reg_need=`false;
+        is_o.write_reg_addr=5'b0;
+        end
         default:begin
             // is_o='{default:0};
             is_o.num1_need=`false;
@@ -68,7 +90,7 @@ always_comb begin
             is_o.accept_mask=3'b111;
             
             is_o.exe_type=arithmatic;
-            is_o.alu_op=alu_or;
+            is_o.alu_op=alu_nop;
             is_o.brunch_type=nbc;
             is_o.llu_op=llu_nop;
             is_o.memory_addr_offset=32'b0;

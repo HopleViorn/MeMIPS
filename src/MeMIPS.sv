@@ -9,7 +9,6 @@ wire rst=~rst_n;
 bool stall_from_decode;
 bool stall_from_issue;
 bool stall_from_execute;
-bool flash_from_execute;
 bool stall_from_memory;
 
 bool stall_to_pc;
@@ -30,7 +29,7 @@ control control0(
       stall_from_decode,
       stall_from_issue,
       stall_from_execute,
-      flash_from_execute,
+      pc_from_execute.enable,
       stall_from_memory,
 
       stall_to_pc,

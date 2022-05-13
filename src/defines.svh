@@ -61,15 +61,16 @@ typedef struct packed {
 
 //execute
 typedef enum logic[2:0] { 
+    llu_nop,
     llu_eq,
     llu_neq,
     llu_gt,
     llu_ge,
     llu_lt,
-    llu_le,
-    llu_nop
+    llu_le
 } LLU_OP;
 typedef enum logic[2:0] { 
+    alu_nop,
     alu_add,
     alu_sub,
     alu_mul,

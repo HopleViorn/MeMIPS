@@ -6,7 +6,6 @@ module icache(
 
 REG_WIDTH rom[127:0];
 initial begin
-    for(int i=0;i<128;i++) rom[i]=32'b0;
     $readmemh("inst_rom.data",rom);
 end
 

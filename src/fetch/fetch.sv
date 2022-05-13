@@ -42,15 +42,15 @@ always_comb begin
     priority case(`true) 
         predict_brunch_taken[0]:begin
             decode_require[0].valid_number=2;
-            pc_check.pc_new=predict_brunch_address[i];
+            pc_check.pc_new=predict_brunch_address[0];
         end
         predict_brunch_taken[1]:begin
             decode_require[0].valid_number=3;
-            pc_check.pc_new=predict_brunch_address[i];
+            pc_check.pc_new=predict_brunch_address[1];
         end
         predict_brunch_taken[2]:begin
             decode_require[0].valid_number=4;
-            pc_check.pc_new=predict_brunch_address[i];
+            pc_check.pc_new=predict_brunch_address[2];
         end
         default:begin
             if(is_brunch[3]) begin

@@ -51,10 +51,14 @@ control control0(
 
 
 PC pc_fetch;
+PC_CHECK pc_from_fetch;
+PC_CHECK pc_from_execute;
 pc_select pc_select0(
     .clk(clk),
     .rst_n(rst_n),
     .stall(stall_to_pc),
+    .pc_from_fetch(pc_from_fetch),
+    .pc_from_execute(pc_from_execute),
     .pc(pc_fetch)
 );
 
@@ -64,6 +68,7 @@ DECODE_REQUIRE[3:0] if_out,id_in;
 `endif
 fetch fetch0(
     .pc(pc_fetch),
+    .pc_check(pc_from_fetch),
     .decode_require(if_out)
 );
 `ifdef debug
@@ -157,6 +162,7 @@ REG_WIDTH[1:0] execute_result;
 `endif
 execute execute0(
     .fu_require(ex_in),
+    .pc_check(pc_from_execute),
     .mem_require(ex_out),
     .execute_result(execute_result)
 );

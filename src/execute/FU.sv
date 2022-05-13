@@ -36,7 +36,6 @@ adder mem_addr_calc(
 );
 
 //brunch 
-//TODO: jr jalr
 //beq reg1,reg2,offset
 //beq num1,num2,num3
 //jr reg1

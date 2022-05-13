@@ -22,6 +22,10 @@ always_comb begin
                     predict_brunch_taken=`true;
                     predict_brunch_address=32'b0;//TODO
                     is_brunch=`true;
+                end else begin
+                    predict_brunch_taken=`false;
+                    predict_brunch_address=32'b0;//TODO
+                    is_brunch=`false;
                 end
             end
             3'b001:begin

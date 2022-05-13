@@ -66,7 +66,10 @@ end
 
 always_comb begin
     for(int i=0;i<4;i++) begin
+        decode_require[i].pc=pc+i*4;
         decode_require[i].inst=inst[i];
+        decode_require[i].predict_brunch_taken=predict_brunch_taken[i];
+        decode_require[i].predict_pc_addr=predict_brunch_address[i];
     end
 end
 

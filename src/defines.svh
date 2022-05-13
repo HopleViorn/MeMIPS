@@ -24,7 +24,8 @@
 `define op_SB 6'b101_000
 `define op_SW 6'b101_011
 
-`define op_Secial 6'b000_000
+`define op_Special 6'b000_000
+    `define op_Special_ADDU 6'b100001
 
 typedef logic[31:0] PC;
 typedef logic[31:0] REG_WIDTH;

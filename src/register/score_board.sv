@@ -28,7 +28,7 @@ always_ff @(posedge clk) begin
         end
     end else if(stall==`false) begin
         if(write_ena!=2'b00) begin
-            for(int i=0;i<32;i++) begin
+            for(int i=1/*pass0*/;i<32;i++) begin
                 if(write_ena==2'b11&&write_addr[0]==write_addr[1]) begin
                     if(i==write_addr[1])
                         score_board_ram[i]<=data_in[1];
@@ -43,7 +43,7 @@ always_ff @(posedge clk) begin
                 end
             end
         end else begin
-            for(int i=0;i<32;i++)begin
+            for(int i=1;i<32;i++)begin
                 score_board_ram[i].position<=score_board_ram[i].position>>1;
             end
         end

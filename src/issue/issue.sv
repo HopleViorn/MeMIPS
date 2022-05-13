@@ -69,7 +69,7 @@ always_comb begin
             num1_ready[i]=`true;
             num1_pre_ready[i]=issue_require[i].num1;
             test[i]=1;
-        end else if(i==1&&issue_require[0].write_reg_need&&issue_require[1].num1_addr==issue_require[0].write_reg_addr) begin
+        end else if(i==1&&issue_require[0].write_reg_need&&issue_require[0].write_reg_addr!=5'b0&&issue_require[1].num1_addr==issue_require[0].write_reg_addr) begin
             num1_ready[i]=`false;
             num1_pre_ready[i]=32'b0;
             //TODO:SL bypass
@@ -91,7 +91,7 @@ always_comb begin
         if(issue_require[i].num2_need==`false) begin//imm
             num2_ready[i]=`true;
             num2_pre_ready[i]=issue_require[i].num2;
-        end else if(i==1&&issue_require[0].write_reg_need&&issue_require[1].num2_addr==issue_require[0].write_reg_addr) begin
+        end else if(i==1&&issue_require[0].write_reg_need&&issue_require[0].write_reg_addr!=5'b0&&issue_require[1].num2_addr==issue_require[0].write_reg_addr) begin
             num2_ready[i]=`false;
             num2_pre_ready[i]=32'b0;
             //TODO:SL bypass

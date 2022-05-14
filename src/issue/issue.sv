@@ -4,6 +4,7 @@ module issue(
     input logic rst_n,
     input bool flash,
     input bool stall,
+    input bool[2:0] post_is_stall_mask,
 
     //issue queue
     input ISSUE_QUEUE_ELEMENT [1:0] issue_require,
@@ -46,6 +47,7 @@ score_board score_board0(
     .rst_n(rst_n),
     .flash(flash),
     .stall(stall),
+    .post_is_stall_mask(post_is_stall_mask),
     .write_ena(score_board_write_ena),
     .write_addr(score_board_write_addr),
     .read_addr(score_board_read_addr),

@@ -1,0 +1,23 @@
+`include"../defines.svh"
+module sim_sram (
+    input logic clk,
+    input SIM_SRAM_REQUIRE sim_sram_require,
+    output logic[15:0] data_out
+);
+
+reg[7:0] sram[0:255];
+
+assign #20 data_out=(sim_sram_require.oe_n||sim_sram_require.ce_n)?16'bz:{sim_sram_require.ub_n?sram[sim_sram_require.addr+1]:8'bZ,sim_sram_require.lb_n?sram[sim_sram_require.addr]:8'bZ};
+
+always @(posedge clk) begin
+    if(sim_sram_require.ce_n) begin
+        for(int i=0;i<256;i++) begin
+            sram[i]=8'b0;
+        end
+    end else if(~sim_sram_require.we_n) begin
+        if(~sim_sram_require.lb_n) sram[sim_sram_require.addr]=sim_sram_require.data_in[7:0];
+        if(~sim_sram_require.ub_n) sram[sim_sram_require.addr+1]=sim_sram_require.data_in[15:8];
+    end
+end
+
+endmodule

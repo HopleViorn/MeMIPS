@@ -131,7 +131,6 @@ issue issue0(
     .clk(clk),
     .rst_n(rst_n),
     .stall(stall_to_is),
-    .post_is_stall_mask(post_is_stall_mask),
     .flash(`false),
     .post_is_stall_mask(post_is_stall_mask),
 

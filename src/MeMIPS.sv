@@ -26,7 +26,7 @@ bool flash_to_is_ex;
 bool flash_to_ex_mem;
 bool flash_to_mem_cmt;
 bool[2:0] post_is_stall_mask;
-
+//zhangyu2021@hit.edu.cn
 control control0(
       stall_from_decode,
       stall_from_issue,
@@ -131,6 +131,7 @@ issue issue0(
     .clk(clk),
     .rst_n(rst_n),
     .stall(stall_to_is),
+    .post_is_stall_mask(post_is_stall_mask),
     .flash(`false),
     .post_is_stall_mask(post_is_stall_mask),
 

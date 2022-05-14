@@ -3,6 +3,7 @@ module score_board(
     input logic clk,
     input bool rst_n,
     input bool stall,
+    input bool [2:0] post_is_stall_mask,
     input bool flash,
     input bool [2:0] post_is_stall_mask,
     

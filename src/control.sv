@@ -41,7 +41,16 @@ assign flash_to_is_ex=flash_from_execute;
 assign flash_to_ex_mem=`false;
 assign flash_to_mem_cmt=stall_from_memory;
 
-assign post_is_stall_mask=3'b0;
+
+always_comb begin
+    priority case(`true) 
+        stall_from_memory: post_is_stall_mask=3'b110;
+        stall_from_execute: post_is_stall_mask=3'b100;
+        default:post_is_stall_mask=3'b000;
+    endcase
+end
+
+
 
 /*
 always_comb begin

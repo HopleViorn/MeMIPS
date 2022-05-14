@@ -11,7 +11,7 @@ MeMIPS MeMIPS0(
     .rst_n (rst_n)
 );
 
-localparam CLK_PERIOD = 10;
+localparam CLK_PERIOD = 8;
 always #(CLK_PERIOD/2) clk=~clk;
 
 initial begin

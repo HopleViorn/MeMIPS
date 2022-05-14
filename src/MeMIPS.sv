@@ -25,6 +25,9 @@ bool flash_to_iq;
 bool flash_to_is_ex;
 bool flash_to_ex_mem;
 bool flash_to_mem_cmt;
+
+bool [2:0] post_is_stall_mask;
+//zhangyu2021@hit.edu.cn
 control control0(
       stall_from_decode,
       stall_from_issue,
@@ -45,7 +48,9 @@ control control0(
       flash_to_iq,
       flash_to_is_ex,
       flash_to_ex_mem,
-      flash_to_mem_cmt
+      flash_to_mem_cmt,
+
+      post_is_stall_mask
 );
 
 
@@ -127,6 +132,7 @@ issue issue0(
     .clk(clk),
     .rst_n(rst_n),
     .stall(stall_to_is),
+    .post_is_stall_mask(post_is_stall_mask),
     .flash(`false),
 
     .issue_require(out_data),

@@ -19,7 +19,9 @@ module control(
     output bool flash_to_iq,
     output bool flash_to_is_ex,
     output bool flash_to_ex_mem,
-    output bool flash_to_mem_cmt
+    output bool flash_to_mem_cmt,
+
+    output bool [2:0] post_is_stall_mask
 );
 
 assign stall_to_pc=stall_from_decode;
@@ -38,6 +40,17 @@ assign flash_to_iq=flash_from_execute;
 assign flash_to_is_ex=flash_from_execute;
 assign flash_to_ex_mem=`false;
 assign flash_to_mem_cmt=stall_from_memory;
+
+
+always_comb begin
+    priority case(`true) 
+        stall_from_memory: post_is_stall_mask=3'b110;
+        stall_from_execute: post_is_stall_mask=3'b100;
+        default:post_is_stall_mask=3'b000;
+    endcase
+end
+
+
 
 /*
 always_comb begin

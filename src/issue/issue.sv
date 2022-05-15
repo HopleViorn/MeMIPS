@@ -4,6 +4,7 @@ module issue(
     input logic rst_n,
     input bool flash,
     input bool stall,
+    input bool[2:0] post_is_stall_mask,
 
     //issue queue
     input ISSUE_QUEUE_ELEMENT [1:0] issue_require,
@@ -46,6 +47,7 @@ score_board score_board0(
     .rst_n(rst_n),
     .flash(flash),
     .stall(stall),
+    .post_is_stall_mask(post_is_stall_mask),
     .write_ena(score_board_write_ena),
     .write_addr(score_board_write_addr),
     .read_addr(score_board_read_addr),
@@ -132,6 +134,14 @@ wire second_ready=num1_ready[1]&num2_ready[1];
 `define nop '{default:0};
 SCORE_BOARD_DATA ndt='{default:0};
 always_comb begin
+    if(stall==`true) begin
+        fu_require[0]=`nop;
+        fu_require[1]=`nop;
+        iq_pop_number=2'd0;
+        score_board_write_ena={`false,`false};
+        score_board_write_data={ndt,ndt};
+        score_board_write_addr={5'b0,5'b0};
+    end else 
     if(iq_size==2'd0||
        first_ready==`false||
        (issue_require[0].exe_type==brunch&&second_ready==`false)

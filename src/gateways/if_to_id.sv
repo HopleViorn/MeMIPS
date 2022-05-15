@@ -1,4 +1,4 @@
-`include "defines.svh"
+`include "../defines.svh"
 module if_to_id(
     input logic clk,
     input bool stall,

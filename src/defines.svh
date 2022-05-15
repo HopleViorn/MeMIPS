@@ -167,4 +167,19 @@ typedef struct packed {
     bool predict_brunch_taken;
 } DECODE_REQUIRE;
 
+
+//sopc
+typedef struct packed {
+    MEM_TYPE mem_type;
+    REG_WIDTH addr;
+    REG_WIDTH data;
+    bool write_ena;
+    bool read_ena;
+} SRAM_CONTROL_REQUIRE;
+
+typedef struct packed {
+    logic valid;
+    REG_WIDTH data;
+} DCACHE_REQUIRE;
+
 `endif

@@ -1,20 +1,20 @@
-`include "defines.svh"
-module mem_to_cmt(
+`include "../defines.svh"
+module is_to_ex(
     input logic clk,
     input bool rst_n,
     input bool stall,
     input bool flash,
 
-    input CMT_REQUIRE[1:0] mem_in,
-    output CMT_REQUIRE[1:0] cmt_out
+    input FU_REQUIRE[1:0] is_in,
+    output FU_REQUIRE[1:0] ex_out
 );
 
 wire rst=~rst_n;
 always_ff @( posedge clk  ) begin 
     if(rst==`true||flash==`true) begin
-        cmt_out<='{default:0};
+        ex_out<='{default:0};
     end else if(stall==`false) begin
-        cmt_out<=mem_in;
+        ex_out<=is_in;
     end //else keep
 end
 

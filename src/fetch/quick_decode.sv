@@ -10,7 +10,7 @@ module quick_decode(
 wire[2:0] op_0=inst[31:29];
 wire[2:0] op_1=inst[28:26];
 
-wire[31:0] pc_offset={{16{inst[15]}},inst[15:0],2'b0};
+wire[31:0] pc_offset={{14{inst[15]}},inst[15:0],2'b0};
 wire[31:0] pc_4=pc+4;
 wire[31:0] pc_imm_addr=pc_4+pc_offset;
 

@@ -6,7 +6,7 @@ module bram_control (
     input REG_WIDTH[1:0] addr,
     input bool[1:0] write_ena,
     input REG_WIDTH[1:0] write_data,
-    
+
     output REG_WIDTH[1:0] read_data,
     output bool[1:0] read_valid
 );
@@ -29,8 +29,8 @@ generate
     end
 endgenerate
 
-localparam IDLE = 0,
-            READING= 1;
+localparam IDLE = 1'b0,
+            READING= 1'b1;
 
 logic state[1:0];
 always_ff @(posedge clk) begin
@@ -39,11 +39,11 @@ always_ff @(posedge clk) begin
             read_valid[i]<=0;
             state[i]<=IDLE;
         end else if(state[i]==IDLE) begin
-            state[i]<=read_req[i]?READING:IDLE;
-            read_valid<=0;
+            state[i]<=read_req[i]&&read_valid==0?READING:IDLE;
+            read_valid[i]<=0;
         end else if(state[i]==READING) begin
             state[i]<=IDLE;
-            read_valid<=1;
+            read_valid[i]<=1;
         end
     end
 end

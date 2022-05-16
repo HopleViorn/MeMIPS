@@ -126,6 +126,50 @@ always_comb begin
         is_o.write_reg_need=`false;
         is_o.write_reg_addr=5'b0;
         end
+        `op_LW:begin//lw rt,imm(rs)
+        is_o.num1_need=`true;
+        is_o.num1=32'b0;
+        is_o.num1_addr=rs;
+        is_o.num2_need=`false;
+        is_o.num2=32'b0;
+        is_o.num2_addr=5'b0;
+        is_o.accept_mask=3'b011;
+        
+        is_o.exe_type=memory;
+        is_o.alu_op=alu_nop;
+        is_o.brunch_type=nbc;
+        is_o.llu_op=llu_nop;
+        is_o.memory_addr_offset=imm_signed_extension;
+
+        is_o.mem_write_ena=`false;
+        is_o.mem_read_ena=`true;
+        is_o.mem_type=wrd;
+
+        is_o.write_reg_need=`true;
+        is_o.write_reg_addr=rt;
+        end
+        `op_SW:begin//sw rt,imm(rs)
+        is_o.num1_need=`true;
+        is_o.num1=32'b0;
+        is_o.num1_addr=rs;
+        is_o.num2_need=`true;
+        is_o.num2=32'b0;
+        is_o.num2_addr=rt;
+        is_o.accept_mask=3'b011;
+        
+        is_o.exe_type=memory;
+        is_o.alu_op=alu_nop;
+        is_o.brunch_type=nbc;
+        is_o.llu_op=llu_nop;
+        is_o.memory_addr_offset=imm_signed_extension;
+
+        is_o.mem_write_ena=`true;
+        is_o.mem_read_ena=`false;
+        is_o.mem_type=wrd;
+
+        is_o.write_reg_need=`false;
+        is_o.write_reg_addr=5'b0;
+        end
         `op_Special:begin
             case(op_Special_code)
                 `op_Special_JR:begin//jr rs

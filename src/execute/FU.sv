@@ -27,7 +27,7 @@ assign mem_require.write_reg_need=fu_require.write_reg_need;
 assign mem_require.write_reg_addr=fu_require.write_reg_addr;
 assign mem_require.result=fu_require.exe_type == brunch?pc_8:alu_result;
 assign mem_require.write_data=fu_require.num1;
-
+assign mem_require.mem_type=fu_require.mem_type;
 //lw reg1,imm(reg2)
 adder mem_addr_calc(
     .a(fu_require.memory_addr_offset),

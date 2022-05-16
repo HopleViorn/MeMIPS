@@ -1,6 +1,7 @@
 `include "../defines.svh"
 module memory(
     input logic clk,
+    input logic rst_n,
     input MEM_REQUIRE[1:0] mem_require,
     output CMT_REQUIRE[1:0] cmt_require,
     output REG_WIDTH[1:0] memory_result,
@@ -11,6 +12,7 @@ REG_WIDTH[1:0] cache_result;
 bool[1:0] read_valid;
 dcache dcache0(
     .clk(clk),
+    .rst_n(rst_n),
     .write_ena({mem_require[1].mem_write_ena,mem_require[0].mem_write_ena}),
     .read_ena({mem_require[1].mem_read_ena,mem_require[0].mem_read_ena}),
     .mem_type({mem_require[1].mem_type,mem_require[0].mem_type}),
@@ -31,6 +33,6 @@ assign cmt_require[1].write_reg_addr=mem_require[1].write_reg_addr;
 assign memory_result[0]=cmt_require[0].result;
 assign memory_result[1]=cmt_require[1].result;
 
-assign stall_from_memory=(read_valid!=2'b11);
+assign stall_from_memory=((mem_require[0].mem_read_ena&~read_valid[0])|(mem_require[1].mem_read_ena&~read_valid[1]));
 
 endmodule

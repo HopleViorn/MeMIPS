@@ -4,8 +4,9 @@ module bram_control (
     input logic rst_n,
     input bool[1:0] read_req,
     input REG_WIDTH[1:0] addr,
-    output bool[1:0] write_ena,
+    input bool[1:0] write_ena,
     input REG_WIDTH[1:0] write_data,
+    
     output REG_WIDTH[1:0] read_data,
     output bool[1:0] read_valid
 );

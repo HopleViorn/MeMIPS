@@ -9,7 +9,7 @@ module ex_to_mem(
     output MEM_REQUIRE[1:0] mem_out
 );
 
-logic rst=~rst_n;
+wire rst=~rst_n;
 
 always_ff @( posedge clk  ) begin 
     if(rst==`true||flash==`true) begin

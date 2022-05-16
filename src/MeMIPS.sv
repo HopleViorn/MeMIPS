@@ -189,6 +189,7 @@ REG_WIDTH[1:0] memory_result;
 `endif
 memory memory0(
     .clk(clk),
+    .rst_n(rst_n),
     .mem_require(mem_in),
     .cmt_require(mem_out),
     .memory_result(memory_result),

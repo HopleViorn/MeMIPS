@@ -15,7 +15,7 @@ localparam CLK_PERIOD = 8;
 always #(CLK_PERIOD/2) clk=~clk;
 
 initial begin
-    #1200 $finish;
+    #624 $finish;
 end
 initial begin
     #1 rst_n<=1'bx;clk<=1'bx;

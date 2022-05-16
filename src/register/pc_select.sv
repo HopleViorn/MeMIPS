@@ -14,12 +14,10 @@ wire rst=~rst_n;
 always_ff @(posedge clk) begin
     if(rst==`true) begin
         pc<=32'b0;
+    end else if(pc_from_execute.enable==`true) begin
+        pc<=pc_from_execute.pc_new;
     end else if(stall==`false)begin
-        if(pc_from_execute.enable==`true) begin
-            pc<=pc_from_execute.pc_new;
-        end else begin
-            pc<=pc_from_fetch.pc_new;
-        end
+        pc<=pc_from_fetch.pc_new;
     end
 end
 

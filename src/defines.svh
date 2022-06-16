@@ -39,7 +39,8 @@
     `define op_Special_AND 6'b100_100
     `define op_Special_OR 6'b100_101
     `define op_Special_XOR 6'b100_110
-
+`define op_Special2 6'b011_100
+    `define op_Special2_MUL 6'b000_010
 typedef logic[31:0] PC;
 typedef logic[31:0] REG_WIDTH;
 typedef logic[4:0] REG_ADDR;

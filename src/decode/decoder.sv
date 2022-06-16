@@ -311,6 +311,55 @@ always_comb begin
             end
             endcase
         end
+        `op_Special2:begin
+            if(op_Special_code==`op_Special2_MUL) begin
+                is_o.num1_need=`true;
+                is_o.num1=32'b0;
+                is_o.num1_addr=rs;
+                is_o.num2_need=`true;
+                is_o.num2=32'b0;
+                is_o.num2_addr=rt;
+                is_o.accept_mask=3'b111;
+                
+                is_o.exe_type=arithmatic;
+                is_o.alu_op=alu_mul;
+                is_o.brunch_type=nbc;
+                is_o.llu_op=llu_nop;
+                is_o.memory_addr_offset=32'b0;
+
+                is_o.mem_write_ena=`false;
+                is_o.mem_read_ena=`false;
+                is_o.mem_type=wrd;
+
+                is_o.write_reg_need=`true;
+                is_o.write_reg_addr=rd;
+
+                is_o.shift_left=`true;
+            end else begin
+                is_o.num1_need=`false;
+                is_o.num1=32'b0;
+                is_o.num1_addr=5'b0;
+                is_o.num2_need=`false;
+                is_o.num2=32'b0;
+                is_o.num2_addr=5'b0;
+                is_o.accept_mask=3'b111;
+                
+                is_o.exe_type=arithmatic;
+                is_o.alu_op=alu_nop;
+                is_o.brunch_type=nbc;
+                is_o.llu_op=llu_nop;
+                is_o.memory_addr_offset=32'b0;
+
+                is_o.mem_write_ena=`false;
+                is_o.mem_read_ena=`false;
+                is_o.mem_type=wrd;
+
+                is_o.write_reg_need=`false;
+                is_o.write_reg_addr=5'b0;
+
+                is_o.shift_left=`true;
+            end
+        end
         default:begin
             // is_o='{default:0};
             is_o.num1_need=`false;

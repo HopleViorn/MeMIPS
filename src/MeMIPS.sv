@@ -1,10 +1,13 @@
 `include "defines.svh"
-`define debug
+//`define debug
 module MeMIPS(
     input logic clk,
-    input bool rst_n
+    input bool rst_n,
+    (*mark_debug="true"*)output logic[31:0] test_reg
 );
-wire rst=~rst_n;
+(*mark_debug="true"*) wire rst=~rst_n;
+
+
 
 bool stall_from_decode;
 bool stall_from_issue;
@@ -26,7 +29,6 @@ bool flash_to_is_ex;
 bool flash_to_ex_mem;
 bool flash_to_mem_cmt;
 bool[2:0] post_is_stall_mask;
-//zhangyu2021@hit.edu.cn
 control control0(
       stall_from_decode,
       stall_from_issue,
@@ -231,7 +233,8 @@ regfile regfile0(
     .read_data(regfile_read_data),
     .write_ena(regfile_write_ena),
     .write_addr(regfile_write_addr),
-    .write_data(regfile_write_data)
+    .write_data(regfile_write_data),
+    .test_reg(test_reg)
 );
 
 `ifdef debug

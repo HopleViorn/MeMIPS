@@ -6,11 +6,15 @@ module regfile(
     output REG_WIDTH [3:0] read_data,
     input bool[1:0] write_ena,
     input REG_ADDR[1:0] write_addr,
-    input REG_WIDTH[1:0] write_data
+    input REG_WIDTH[1:0] write_data,
+
+    output logic[31:0] test_reg
 );
 wire rst=~rst_n;
 
-logic[31:0] regs [0:31];
+(*mark_debug="true"*)logic[31:0] regs [0:31];
+
+assign test_reg=regs[13];
 
 always_comb begin
     for(int i=0;i<4;i++) begin

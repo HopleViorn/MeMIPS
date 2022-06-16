@@ -267,6 +267,13 @@ always_comb begin
             score_board_write_addr[1]=5'b0;
         end
         iq_pop_number=2'd2;
+    end else begin
+        fu_require[0]=`nop;
+        fu_require[1]=`nop;
+        iq_pop_number=2'd0;
+        score_board_write_ena={`false,`false};
+        score_board_write_data={ndt,ndt};
+        score_board_write_addr={5'b0,5'b0};
     end
 end
 

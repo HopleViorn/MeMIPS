@@ -6,7 +6,7 @@ module pc_select(
 
     input PC_CHECK pc_from_fetch,
     input PC_CHECK pc_from_execute,
-    output PC pc
+    (*mark_debug="true"*) output PC pc
 );
 
 wire rst=~rst_n;

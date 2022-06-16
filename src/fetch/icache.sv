@@ -4,7 +4,7 @@ module icache(
     output REG_WIDTH [3:0] inst
 );
 
-`define OnBoard
+// `define OnBoard
 `ifdef OnBoard
     REG_WIDTH rom[32]={
         32'h0800000b,

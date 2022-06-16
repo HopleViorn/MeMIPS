@@ -177,6 +177,7 @@ always_comb begin
         fu_require[0].mem_read_ena=issue_require[0].mem_read_ena;
         fu_require[0].write_reg_need=issue_require[0].write_reg_need;
         fu_require[0].write_reg_addr=issue_require[0].write_reg_addr;
+        fu_require[0].shift_left=issue_require[0].shift_left;
         if(issue_require[0].write_reg_need) begin
             score_board_write_ena[0]=`true;
             score_board_write_data[0]='{
@@ -221,7 +222,8 @@ always_comb begin
         fu_require[0].mem_write_ena=issue_require[0].mem_write_ena;
         fu_require[0].mem_read_ena=issue_require[0].mem_read_ena;
         fu_require[0].write_reg_need=issue_require[0].write_reg_need;
-        fu_require[0].write_reg_addr=issue_require[0].write_reg_addr;    
+        fu_require[0].write_reg_addr=issue_require[0].write_reg_addr;
+        fu_require[0].shift_left=issue_require[0].shift_left;
         if(issue_require[0].write_reg_need) begin
             score_board_write_ena[0]=`true;
             score_board_write_data[0]='{
@@ -253,6 +255,7 @@ always_comb begin
         fu_require[1].mem_read_ena=issue_require[1].mem_read_ena;
         fu_require[1].write_reg_need=issue_require[1].write_reg_need;
         fu_require[1].write_reg_addr=issue_require[1].write_reg_addr;
+        fu_require[1].shift_left=issue_require[1].shift_left;
         if(issue_require[1].write_reg_need) begin
             score_board_write_ena[1]=`true;
             score_board_write_data[1]='{

@@ -102,6 +102,8 @@ typedef struct packed {
     ALU_OP alu_op;
     logic[31:0] num1;
     logic[31:0] num2;
+    //shift
+    logic shift_left;
     //brunch
     PC pc;
     BRUNCH_TYPE brunch_type;
@@ -137,6 +139,7 @@ typedef struct packed {
     EXE_TYPE exe_type;
     ALU_OP alu_op;
     BRUNCH_TYPE brunch_type;
+    logic shift_left;
     PC predict_pc_addr;
     bool predict_brunch_taken;
     LLU_OP llu_op;

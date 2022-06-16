@@ -13,6 +13,13 @@ alu alu0(
     .alu_op(fu_require.alu_op),
     .c(alu_result)
 );
+
+wire[31:0] shift_result=
+    (fu_require.shift_left==`true?
+        fu_require.num1<<fu_require.num2:
+        fu_require.num1>>fu_require.num2);
+
+
 PC pc_8;
 adder pc_adder(
     .a(fu_require.pc),
@@ -25,7 +32,19 @@ assign mem_require.mem_write_ena=fu_require.mem_write_ena;
 assign mem_require.mem_read_ena=fu_require.mem_read_ena;
 assign mem_require.write_reg_need=fu_require.write_reg_need;
 assign mem_require.write_reg_addr=fu_require.write_reg_addr;
-assign mem_require.result=fu_require.exe_type == brunch?pc_8:alu_result;
+
+//assign mem_require.result=fu_require.exe_type == brunch?pc_8:alu_result;
+always_comb begin
+    case(fu_require.exe_type)
+        brunch:mem_require.result=pc_8;
+        arithmatic:
+        memory:
+        mem_require.result=alu_result;
+        shift:mem_require.result=shift_result;
+        default: mem_require.result=32'b0;
+    endcase
+end
+
 assign mem_require.write_data=fu_require.num2;
 assign mem_require.mem_type=fu_require.mem_type;
 //load save

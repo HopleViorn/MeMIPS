@@ -29,7 +29,7 @@ assign stall_to_if_id=stall_from_decode;
 assign stall_to_id_is=stall_from_decode;
 
 
-assign stall_to_is=stall_from_memory;;
+assign stall_to_is=stall_from_memory|flash_from_execute;//scoreboard not write 
 assign stall_to_is_ex=stall_from_memory;
 assign stall_to_ex_mem=stall_from_memory;
 assign stall_to_mem_cmt=`false;

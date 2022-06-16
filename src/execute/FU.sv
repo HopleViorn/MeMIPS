@@ -36,12 +36,10 @@ assign mem_require.write_reg_addr=fu_require.write_reg_addr;
 //assign mem_require.result=fu_require.exe_type == brunch?pc_8:alu_result;
 always_comb begin
     case(fu_require.exe_type)
-        brunch:mem_require.result=pc_8;
-        arithmatic:
-        memory:
-        mem_require.result=alu_result;
-        shift:mem_require.result=shift_result;
-        default: mem_require.result=32'b0;
+        brunch:             mem_require.result=pc_8;
+        arithmatic,memory:  mem_require.result=alu_result;
+        shift:              mem_require.result=shift_result;
+        default:            mem_require.result=32'b0;
     endcase
 end
 

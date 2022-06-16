@@ -47,7 +47,7 @@ module icache(
         inst[3]=rom[pc[6:2]+3];
     end
 `else
-REG_WIDTH rom[127:0];
+REG_WIDTH rom[255:0];
 initial begin
     $readmemh("inst_rom.data",rom);
 end

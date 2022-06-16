@@ -72,6 +72,9 @@ DECODE_REQUIRE[3:0] if_out,id_in;
 (*DONT_TOUCH="true"*)
 `endif
 fetch fetch0(
+    .clk(clk),
+    .rst_n(rst_n),
+    .stall(stall_to_if_id),
     .pc(pc_fetch),
     .pc_check(pc_from_fetch),
     .decode_require(if_out)

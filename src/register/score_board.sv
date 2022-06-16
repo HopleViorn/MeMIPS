@@ -28,7 +28,7 @@ always_ff @(posedge clk) begin
             score_board_ram[i]<='{default:0};
         end
     end else begin
-        if(write_ena!=2'b00) begin
+        if(~stall&&write_ena!=2'b00) begin
             for(int i=1/*pass0*/;i<32;i++) begin
                 if(write_ena==2'b11&&write_addr[0]==write_addr[1]) begin
                     if(i==write_addr[1])

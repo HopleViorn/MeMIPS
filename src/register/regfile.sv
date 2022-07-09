@@ -8,11 +8,14 @@ module regfile(
     input REG_ADDR[1:0] write_addr,
     input REG_WIDTH[1:0] write_data,
 
-    output logic[31:0] test_reg
+    output wire[7:0] number
 );
 wire rst=~rst_n;
 
-(*mark_debug="true"*)logic[31:0] regs [0:31];
+
+logic[31:0] regs [0:31];
+
+assign number=regs[16];
 
 assign test_reg=regs[13];
 

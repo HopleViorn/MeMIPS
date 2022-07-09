@@ -99,8 +99,8 @@ reg[`RegBus] Reg[0:31];
 reg[7:0] tmp;
 reg[31:0] tmpReg;
 
-reg brunch_flag;
-reg[`InstBus] brunch_address;
+reg branch_flag;
+reg[`InstBus] branch_address;
 logic stall;
 
 always_ff @(posedge clk ) begin
@@ -168,26 +168,26 @@ always @(posedge clk) begin
 		for(int i=0;i<32;i++) begin
 			Reg[i]=`ZeroWord;
 		end
-		brunch_flag<=0;
+		branch_flag<=0;
 		stall<=0;
 	end else if(stall) begin
 		stall<=0;
 		case(opcode)
 			`opcode_LB:begin
-				brunch_flag<=0;
+				branch_flag<=0;
 				if(rt!=0)
 				Reg[rt]<={{{24{ext_ram_read_data[7]}},ext_ram_read_data[7:0]}};
 			end
 			`opcode_LW:begin
-				brunch_flag<=0;
+				branch_flag<=0;
 				if(rt!=0)
 				Reg[rt]<=ext_ram_read_data;
 			end
 			`opcode_SB:begin
-				brunch_flag<=0;
+				branch_flag<=0;
 			end
 			`opcode_SW:begin
-				brunch_flag<=0;
+				branch_flag<=0;
 			end
 		endcase
 
@@ -196,64 +196,64 @@ always @(posedge clk) begin
 			`opcode_ORI: begin
 				if(rt!=0)
 				Reg[rt]<=Reg[rs]|imm;
-				brunch_flag<=0;
+				branch_flag<=0;
 			end
 			`opcode_XORI: begin
 				if(rt!=0)
 				Reg[rt]<=Reg[rs]^imm;
-				brunch_flag<=0;
+				branch_flag<=0;
 			end
 			`opcode_ADDIU:begin
 				if(rt!=0)
 				Reg[rt]<=Reg[rs]+{{16{imm[15]}},imm};
-				brunch_flag<=0;
+				branch_flag<=0;
 			end
 			`opcode_ANDI:begin
 				if(rt!=0)
 				Reg[rt]<=Reg[rs]&imm;
-				brunch_flag<=0;
+				branch_flag<=0;
 			end
 			`opcode_LUI:begin
 				if(rt!=0)
 				Reg[rt]<={imm,16'b0};
-				brunch_flag<=0;
+				branch_flag<=0;
 			end
 
 			`opcode_BEQ:begin
 				if(Reg[rs]==Reg[rt]) begin
-					brunch_flag<=1;
-					brunch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
+					branch_flag<=1;
+					branch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
 				end else begin
-					brunch_flag<=0;
-					brunch_address<=`ZeroWord;
+					branch_flag<=0;
+					branch_address<=`ZeroWord;
 				end
 			end
 			`opcode_BNE:begin
 				if(Reg[rs]!=Reg[rt]) begin
-					brunch_flag<=1;
-					brunch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
+					branch_flag<=1;
+					branch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
 				end else begin
-					brunch_flag<=0;
-					brunch_address<=`ZeroWord;
+					branch_flag<=0;
+					branch_address<=`ZeroWord;
 				end
 			end
 			`opcode_BGTZ:begin
 				if(Reg[rs]&32'h8000_0000==`ZeroWord&&Reg[rs]!=`ZeroWord) begin
-					brunch_flag<=1;
-					brunch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
+					branch_flag<=1;
+					branch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
 				end else begin
-					brunch_flag<=0;
-					brunch_address<=`ZeroWord;
+					branch_flag<=0;
+					branch_address<=`ZeroWord;
 				end	
 			end		
 			`opcode_J: begin
-				brunch_flag<=1;
-				brunch_address<={pc_4[31:28],inst[25:0],2'b00};
+				branch_flag<=1;
+				branch_address<={pc_4[31:28],inst[25:0],2'b00};
 			end			
 			`opcode_JAL:begin
 				Reg[31]<=pc_8;
-				brunch_flag<=1;
-				brunch_address<={pc_4[31:28],inst[25:0],2'b00};
+				branch_flag<=1;
+				branch_address<={pc_4[31:28],inst[25:0],2'b00};
 			end
 
 			`opcode_LB:begin
@@ -282,45 +282,45 @@ always @(posedge clk) begin
 				
 				case(func)
 					`func_ADDU:begin
-					   brunch_flag<=0;
+					   branch_flag<=0;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rs]+Reg[rt];
 					end
 					`func_XOR:begin
-					   brunch_flag<=0;
+					   branch_flag<=0;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rs]^Reg[rt];
 					end
 					`func_AND:begin
-					   brunch_flag<=0;
+					   branch_flag<=0;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rs]&Reg[rt];
 					end
 					`func_OR:begin
-					   brunch_flag<=0;
+					   branch_flag<=0;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rs]|Reg[rt];
 					end
 					`func_SLL:begin
-					   brunch_flag<=0;
+					   branch_flag<=0;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rt]<<sa;
 					end
 					`func_SRL:begin
-					   brunch_flag<=0;
+					   branch_flag<=0;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rt]>>sa;
 					end			
                     `func_JR:begin
-                        brunch_flag<=1;
-                        brunch_address<=Reg[rs];
+                        branch_flag<=1;
+                        branch_address<=Reg[rs];
 			         end
 					default:begin
 					end
 				endcase
 			end
 			default:begin
-				brunch_flag<=0;
+				branch_flag<=0;
 			end
 		endcase
 	end
@@ -330,7 +330,7 @@ always @(posedge clk) begin
 	if(rst==`Ena) pc<=`ZeroWord;
 	else if((opcode==`opcode_LB||opcode==`opcode_LW||opcode==`opcode_SB||opcode==`opcode_SW)&&~stall) begin
 		pc<=pc;
-	end else if(brunch_flag) pc<=brunch_address;
+	end else if(branch_flag) pc<=branch_address;
 	else pc<=pc+4;
 end
 

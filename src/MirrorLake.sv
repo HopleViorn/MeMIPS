@@ -3,11 +3,25 @@
 module MirrorLake(
     input logic clk,
     input bool rst_n,
-    (*mark_debug="true"*)output logic[31:0] test_reg
+
+    input REG_WIDTH base_ram_data_in,
+    output REG_WIDTH base_ram_addr,
+    output logic[3:0] base_ram_be_n,
+    output logic base_ram_we,
+
+    input REG_WIDTH ext_ram_data_in,
+    output REG_WIDTH ext_ram_data_out,
+    output REG_WIDTH ext_ram_addr,
+    output logic[3:0] ext_ram_be_n,
+    output logic ext_ram_we,
+    
+    input logic rxd,
+    output logic txd,
+
+    output logic[7:0] number
 );
-(*mark_debug="true"*) wire rst=~rst_n;
 
-
+wire rst=~rst_n;
 
 bool stall_from_decode;
 bool stall_from_issue;
@@ -54,31 +68,44 @@ control control0(
       post_is_stall_mask
 );
 
-
-PC pc_fetch;
-PC_CHECK pc_from_fetch;
 PC_CHECK pc_from_execute;
-pc_select pc_select0(
-    .clk(clk),
-    .rst_n(rst_n),
-    .stall(stall_to_pc),
-    .pc_from_fetch(pc_from_fetch),
-    .pc_from_execute(pc_from_execute),
-    .pc(pc_fetch)
-);
 
 DECODE_REQUIRE[3:0] if_out,id_in;
+
+
+sram_interface icache_interface();
+sram_interface dcache_interface();
+
+crossbar crossbar0(
+    .clk,.rst,
+
+    .base_ram_data_in,.base_ram_addr,
+    .base_ram_be_n,.base_ram_we,
+
+    .ext_ram_data_in,.ext_ram_data_out,.ext_ram_addr,
+    .ext_ram_be_n,.ext_ram_we,
+
+    .rxd,.txd,
+    .number,
+
+    .icache(icache_interface.slave_r),
+    .dcache(dcache_interface.slave_rw)
+);
+
+wire stall_from_fetch;
+
 `ifdef debug
 (*DONT_TOUCH="true"*)
 `endif
 fetch fetch0(
-    .clk(clk),
-    .rst_n(rst_n),
+    .clk,.rst,
+    .pc_from_execute,
     .stall(stall_to_if_id),
-    .pc(pc_fetch),
-    .pc_check(pc_from_fetch),
-    .decode_require(if_out)
+    .decode_require(if_out),
+    .stall_from_fetch,
+    .sram_port(icache_interface.master_r)
 );
+
 `ifdef debug
 (*DONT_TOUCH="true"*)
 `endif
@@ -86,7 +113,7 @@ if_to_id if_to_id0(
     .clk(clk),
     .rst_n(rst_n),
     .stall(stall_to_if_id),
-    .flash(flash_to_if_id),
+    .flash(flash_to_if_id|stall_from_fetch),
     .if_in(if_out),
     .id_out(id_in)
 );
@@ -198,7 +225,8 @@ memory memory0(
     .mem_require(mem_in),
     .cmt_require(mem_out),
     .memory_result(memory_result),
-    .stall_from_memory(stall_from_memory)
+    .stall_from_memory(stall_from_memory),
+    .sram_port(dcache_interface.master_rw)
 );
 `ifdef debug
 (*DONT_TOUCH="true"*)
@@ -236,8 +264,9 @@ regfile regfile0(
     .read_data(regfile_read_data),
     .write_ena(regfile_write_ena),
     .write_addr(regfile_write_addr),
-    .write_data(regfile_write_data),
-    .test_reg(test_reg)
+    .write_data(regfile_write_data)
+
+    // .number
 );
 
 `ifdef debug

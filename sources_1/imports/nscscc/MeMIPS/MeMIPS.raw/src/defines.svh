@@ -94,8 +94,8 @@ typedef enum logic[2:0] {
     alu_and
 } ALU_OP;
 
-typedef enum logic[1:0] { arithmatic,shift,brunch,memory } EXE_TYPE;
-typedef enum logic[1:0] { nbc,b,j,jr } BRUNCH_TYPE;
+typedef enum logic[1:0] { arithmatic,shift,branch,memory } EXE_TYPE;
+typedef enum logic[1:0] { nbc,b,j,jr } branch_TYPE;
 typedef struct packed {
     EXE_TYPE exe_type;
 
@@ -105,11 +105,11 @@ typedef struct packed {
     logic[31:0] num2;
     //shift
     logic shift_left;
-    //brunch
+    //branch
     PC pc;
-    BRUNCH_TYPE brunch_type;
+    branch_TYPE branch_type;
     PC predict_pc_addr;
-    bool predict_brunch_taken;
+    bool predict_branch_taken;
     LLU_OP llu_op;
     //memory
     logic[31:0] memory_addr_offset;
@@ -139,10 +139,10 @@ typedef struct packed {
     //ex
     EXE_TYPE exe_type;
     ALU_OP alu_op;
-    BRUNCH_TYPE brunch_type;
+    branch_TYPE branch_type;
     logic shift_left;
     PC predict_pc_addr;
-    bool predict_brunch_taken;
+    bool predict_branch_taken;
     LLU_OP llu_op;
     logic[31:0] memory_addr_offset;
 
@@ -165,10 +165,10 @@ typedef struct packed {
 typedef struct packed {
     PC pc;
     logic[31:0] inst;
-    //brunch predict
+    //branch predict
     logic[2:0] valid_number;
     PC predict_pc_addr;
-    bool predict_brunch_taken;
+    bool predict_branch_taken;
 } DECODE_REQUIRE;
 
 `endif

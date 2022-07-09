@@ -2,31 +2,74 @@
 module dcache(
     input logic clk,
     input logic rst_n,
-    input bool[1:0] write_ena,
-    input bool[1:0] read_ena,
-    input MEM_TYPE[1:0] mem_type,
-    input REG_WIDTH[1:0] addr,
-    input REG_WIDTH[1:0] write_data,
     
+    input REG_WIDTH[1:0] addr,
+    input bool[1:0] req,
+    input bool[1:0] we,
 
-    // output bool[1:0] read_req,
-    // output REG_WIDTH[1:0] addr_sram,
-    // output REG_WIDTH[1:0] din_sram,
-    // output bool[1:0] we_sram,
-    output bool[1:0] read_valid,
-    output REG_WIDTH[1:0] read_data
+    input MEM_TYPE[1:0] mem_type,
+    input REG_WIDTH[1:0] write_data,
+
+    output bool[1:0] ok,
+    output REG_WIDTH[1:0] read_data,
+
+    sram_interface.master_rw sram_port
 );
 
-bram_control bram_control0(
-    .clk(clk),
-    .rst_n(rst_n),
-    .read_req(read_ena),
-    .addr(addr),
-    .write_ena(write_ena),
-    .write_data(write_data),
-    .read_data(read_data),
-    .read_valid(read_valid)
-);
+bool busy;
+
+always_ff @(posedge clk) begin
+    if(~rst_n) begin
+        busy<=0;
+    end else begin
+        if(~busy) begin
+            if(req[0]&sram_port.ok) begin
+                busy<=1;
+            end else begin
+                busy<=0;
+            end
+        end else begin
+            busy<=0;
+        end
+    end
+end
+assign read_data=sram_port.din;
+assign ok[1]=1;
+always_comb begin
+    if(~rst_n) begin
+        ok[0]=0;
+        sram_port.req=0;
+        sram_port.mem_type=wrd;
+        sram_port.dout=32'b0;
+        sram_port.we=1'b0;
+        sram_port.addr=32'b0;
+    end else begin
+        if(~busy) begin
+            if(req[0]) begin
+                ok[0]=0;
+                sram_port.req=1;
+                sram_port.mem_type=mem_type[0];
+                sram_port.dout=write_data;
+                sram_port.we=we[0];
+                sram_port.addr=addr[0];//
+            end else begin
+                ok[0]=1;
+                sram_port.req=0;
+                sram_port.mem_type=wrd;
+                sram_port.dout=32'b0;
+                sram_port.we=1'b0;
+                sram_port.addr=32'b0;
+            end
+        end else begin
+            ok[0]=1;
+            sram_port.req=1;
+            sram_port.mem_type=mem_type[0];
+            sram_port.dout=write_data[0];
+            sram_port.we=we[0];
+            sram_port.addr=addr[0];
+        end
+    end
+end
 
 //rewrite
 // assign read_data=32'd23333;

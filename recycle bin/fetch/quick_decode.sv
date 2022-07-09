@@ -2,9 +2,9 @@
 module quick_decode(
     input PC pc,
     input REG_WIDTH inst,
-    output bool is_brunch,
-    output bool predict_brunch_taken,
-    output REG_WIDTH predict_brunch_address,
+    output bool is_branch,
+    output bool predict_branch_taken,
+    output REG_WIDTH predict_branch_address,
     output bool is_CALL,
     output bool is_RETURN
 );
@@ -21,60 +21,60 @@ always_comb begin
         case(op_1)
             3'b000:begin
                 if(inst[5:1]==5'b00100) begin//JR JALR
-                    predict_brunch_taken=`true;
-                    predict_brunch_address=32'b0;//TODO
-                    is_brunch=`true;
+                    predict_branch_taken=`true;
+                    predict_branch_address=32'b0;//TODO
+                    is_branch=`true;
                     is_RETURN=`true;
                     is_CALL=`false;
                 end else begin
-                    predict_brunch_taken=`false;
-                    predict_brunch_address=32'b0;//TODO
-                    is_brunch=`false;
+                    predict_branch_taken=`false;
+                    predict_branch_address=32'b0;//TODO
+                    is_branch=`false;
                     is_RETURN=`false;
                     is_CALL=`false;
                 end
             end
             3'b001:begin
                 if(inst[20:16]==5'b00000) begin//BLTZ
-                    predict_brunch_taken=`true;
-                    predict_brunch_address=pc_imm_addr;
-                    is_brunch=`true;
+                    predict_branch_taken=`true;
+                    predict_branch_address=pc_imm_addr;
+                    is_branch=`true;
                     is_RETURN=`false;
                     is_CALL=`false;
                 end else begin
-                    predict_brunch_taken=`false;
-                    predict_brunch_address=32'b0;
-                    is_brunch=`false;
+                    predict_branch_taken=`false;
+                    predict_branch_address=32'b0;
+                    is_branch=`false;
                     is_RETURN=`false;
                     is_CALL=`false;
                 end
             end
             3'b010:begin//J
-                predict_brunch_taken=`true;
-                predict_brunch_address={pc_4[31:28],inst[25:0],2'b0};
-                is_brunch=`true;
+                predict_branch_taken=`true;
+                predict_branch_address={pc_4[31:28],inst[25:0],2'b0};
+                is_branch=`true;
                 is_RETURN=`false;
                 is_CALL=`false;
             end
             3'b011:begin//JAL
-                predict_brunch_taken=`true;
-                predict_brunch_address={pc_4[31:28],inst[25:0],2'b0};
-                is_brunch=`true;
+                predict_branch_taken=`true;
+                predict_branch_address={pc_4[31:28],inst[25:0],2'b0};
+                is_branch=`true;
                 is_RETURN=`false;
                 is_CALL=`true;
             end
             default:begin
-                predict_brunch_taken=`true;
-                predict_brunch_address=pc_imm_addr;
-                is_brunch=`true;
+                predict_branch_taken=`true;
+                predict_branch_address=pc_imm_addr;
+                is_branch=`true;
                 is_RETURN=`false;
                 is_CALL=`false;
             end
         endcase
     end else begin
-        predict_brunch_taken=`false;
-        predict_brunch_address=32'b0;
-        is_brunch=`false;
+        predict_branch_taken=`false;
+        predict_branch_address=32'b0;
+        is_branch=`false;
         is_RETURN=`false;
         is_CALL=`false;
     end

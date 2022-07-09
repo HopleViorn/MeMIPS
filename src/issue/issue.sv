@@ -116,15 +116,15 @@ end
 0:
     NN:zero op
     XX:first not ready
-    BD:first is brunch,second not ready
+    BD:first is branch,second not ready
 1:
     XN:one op and the first is ready
     XX:first ready, but second not
    // WR:first ready, but second need first(=the second is not ready)
-    XB:second is brunch
+    XB:second is branch
 2:
     XX:first ready,second ready
-    BD:brunch must with delay slot
+    BD:branch must with delay slot
    //TODO: SL in-line bypass
 */
 
@@ -144,7 +144,7 @@ always_comb begin
     end else 
     if(iq_size==2'd0||
        first_ready==`false||
-       (issue_require[0].exe_type==brunch&&second_ready==`false)
+       (issue_require[0].exe_type==branch&&second_ready==`false)
     ) begin
         fu_require[0]=`nop;
         fu_require[1]=`nop;
@@ -156,7 +156,8 @@ always_comb begin
         (iq_size==2'd1&&first_ready==`true)||
         (iq_size==2'd2&&(
             (first_ready==`true&&second_ready==`false)||
-            (issue_require[1].exe_type==brunch)
+            (issue_require[1].exe_type==branch)
+            ||(issue_require[1].exe_type==memory)//this
             )
         )
     ) begin
@@ -167,9 +168,9 @@ always_comb begin
 
         fu_require[0].alu_op=issue_require[0].alu_op;
         fu_require[0].exe_type=issue_require[0].exe_type;
-        fu_require[0].brunch_type=issue_require[0].brunch_type;
+        fu_require[0].branch_type=issue_require[0].branch_type;
         fu_require[0].predict_pc_addr=issue_require[0].predict_pc_addr;
-        fu_require[0].predict_brunch_taken=issue_require[0].predict_brunch_taken;
+        fu_require[0].predict_branch_taken=issue_require[0].predict_branch_taken;
         fu_require[0].llu_op=issue_require[0].llu_op;
         fu_require[0].memory_addr_offset=issue_require[0].memory_addr_offset;
         fu_require[0].mem_type=issue_require[0].mem_type;
@@ -203,7 +204,7 @@ always_comb begin
     end else if(
         iq_size==2'd2&&(
             (first_ready==`true&&second_ready==`true)||
-            (issue_require[0].exe_type==brunch&&second_ready==`true)
+            (issue_require[0].exe_type==branch&&second_ready==`true)
         )
     ) begin
         fu_require[0].pc=issue_require[0].pc;
@@ -213,9 +214,9 @@ always_comb begin
 
         fu_require[0].alu_op=issue_require[0].alu_op;
         fu_require[0].exe_type=issue_require[0].exe_type;
-        fu_require[0].brunch_type=issue_require[0].brunch_type;
+        fu_require[0].branch_type=issue_require[0].branch_type;
         fu_require[0].predict_pc_addr=issue_require[0].predict_pc_addr;
-        fu_require[0].predict_brunch_taken=issue_require[0].predict_brunch_taken;
+        fu_require[0].predict_branch_taken=issue_require[0].predict_branch_taken;
         fu_require[0].llu_op=issue_require[0].llu_op;
         fu_require[0].memory_addr_offset=issue_require[0].memory_addr_offset;
         fu_require[0].mem_type=issue_require[0].mem_type;
@@ -245,9 +246,9 @@ always_comb begin
 
         fu_require[1].alu_op=issue_require[1].alu_op;
         fu_require[1].exe_type=issue_require[1].exe_type;
-        fu_require[1].brunch_type=issue_require[1].brunch_type;
+        fu_require[1].branch_type=issue_require[1].branch_type;
         fu_require[1].predict_pc_addr=issue_require[1].predict_pc_addr;
-        fu_require[1].predict_brunch_taken=issue_require[1].predict_brunch_taken;
+        fu_require[1].predict_branch_taken=issue_require[1].predict_branch_taken;
         fu_require[1].llu_op=issue_require[1].llu_op;
         fu_require[1].memory_addr_offset=issue_require[1].memory_addr_offset;
         fu_require[1].mem_type=issue_require[1].mem_type;

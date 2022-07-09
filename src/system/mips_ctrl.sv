@@ -44,19 +44,19 @@ module mips_ctrl(
 	input wire clk,
 	input wire rst,
 
-	inout logic[31:0] base_ram_data,  //BaseRAM数据，低8位与CPLD串口控制器共�?
+	inout logic[31:0] base_ram_data,  //BaseRAM数据，低8位与CPLD串口控制器共�??
     output logic[19:0] base_ram_addr, //BaseRAM地址
-    output logic[3:0] base_ram_be_n,  //BaseRAM字节使能，低有效。如果不使用字节使能，请保持�?0
-    output logic base_ram_req,       //BaseRAM片�?�，低有�?
-    output logic base_ram_wr,       //BaseRAM读使能，低有�?
+    output logic[3:0] base_ram_be_n,  //BaseRAM字节使能，低有效。如果不使用字节使能，请保持�??0
+    output logic base_ram_req,       //BaseRAM片�?�，低有�??
+    output logic base_ram_wr,       //BaseRAM读使能，低有�??
 	input logic base_ram_ok,
 
     //ExtRAM信号
     inout logic[31:0] ext_ram_data,  //ExtRAM数据
     output logic[19:0] ext_ram_addr, //ExtRAM地址
-    output logic[3:0] ext_ram_be_n,  //ExtRAM字节使能，低有效。如果不使用字节使能，请保持�?0
-    output logic ext_ram_req,       //ExtRAM片�?�，低有�?
-    output logic ext_ram_wr,       //ExtRAM读使能，低有�?
+    output logic[3:0] ext_ram_be_n,  //ExtRAM字节使能，低有效。如果不使用字节使能，请保持�??0
+    output logic ext_ram_req,       //ExtRAM片�?�，低有�??
+    output logic ext_ram_wr,       //ExtRAM读使能，低有�??
 	input logic ext_ram_ok
 );
 
@@ -99,8 +99,8 @@ reg[`RegBus] Reg[0:31];
 reg[7:0] tmp;
 reg[31:0] tmpReg;
 
-reg brunch_flag;
-reg[`InstBus] brunch_address;
+reg branch_flag;
+reg[`InstBus] branch_address;
 logic stall;
 
 always_comb begin
@@ -152,7 +152,7 @@ always_comb begin
 			end
 			default:begin
 				ext_ram_addr=0;
-				ext_ram_write_data=0;
+				ext_ram_write_data=32'b0;
 				ext_ram_wr=0;
 				ext_ram_be_n=4'b0000;
 				ext_ram_req=0;
@@ -167,103 +167,103 @@ always @(posedge clk) begin
 		for(int i=0;i<32;i++) begin
 			Reg[i]=`ZeroWord;
 		end
-		brunch_flag<=0;
-		brunch_address<=`ZeroWord;
+		branch_flag<=0;
+		branch_address<=`ZeroWord;
 	end else if(~stall) begin
 		case(opcode)
 			`opcode_ORI: begin
 				if(rt!=0) Reg[rt]<=Reg[rs]|imm;
 				else Reg[rt]<=32'b0;
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 			end
 			`opcode_XORI: begin
 				if(rt!=0)
 				Reg[rt]<=Reg[rs]^imm;
 				else Reg[rt]<=32'b0;
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 			end
 			`opcode_ADDIU:begin
 				if(rt!=0)
 				Reg[rt]<=Reg[rs]+{{16{imm[15]}},imm};
 				else Reg[rt]<=32'b0;
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 			end
 			`opcode_ANDI:begin
 				if(rt!=0)
 				Reg[rt]<=Reg[rs]&imm;
 				else Reg[rt]<=32'b0;
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 			end
 			`opcode_LUI:begin
 				if(rt!=0)
 				Reg[rt]<={imm,16'b0};
 				else Reg[rt]<=32'b0;
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 			end
 
 			`opcode_BEQ:begin
 				if(Reg[rs]==Reg[rt]) begin
-					brunch_flag<=1;
-					brunch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
+					branch_flag<=1;
+					branch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
 				end else begin
-					brunch_flag<=0;
-					brunch_address<=`ZeroWord;
+					branch_flag<=0;
+					branch_address<=`ZeroWord;
 				end
 			end
 			`opcode_BNE:begin
 				if(Reg[rs]!=Reg[rt]) begin
-					brunch_flag<=1;
-					brunch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
+					branch_flag<=1;
+					branch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
 				end else begin
-					brunch_flag<=0;
-					brunch_address<=`ZeroWord;
+					branch_flag<=0;
+					branch_address<=`ZeroWord;
 				end
 			end
 			`opcode_BGTZ:begin
 				if(Reg[rs]&32'h8000_0000==`ZeroWord&&Reg[rs]!=`ZeroWord) begin
-					brunch_flag<=1;
-					brunch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
+					branch_flag<=1;
+					branch_address<=pc_4+{{16{imm[15]}},imm,2'b00};
 				end else begin
-					brunch_flag<=0;
-					brunch_address<=`ZeroWord;
+					branch_flag<=0;
+					branch_address<=`ZeroWord;
 				end	
 			end		
 			`opcode_J: begin
-				brunch_flag<=1;
-				brunch_address<={pc_4[31:28],inst[25:0],2'b00};
+				branch_flag<=1;
+				branch_address<={pc_4[31:28],inst[25:0],2'b00};
 			end			
 			`opcode_JAL:begin
 				Reg[31]<=pc_8;
-				brunch_flag<=1;
-				brunch_address<={pc_4[31:28],inst[25:0],2'b00};
+				branch_flag<=1;
+				branch_address<={pc_4[31:28],inst[25:0],2'b00};
 			end
 
 			`opcode_LB:begin
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 				if(rt!=0)
 				Reg[rt]<={{{24{ext_ram_read_data[7]}},ext_ram_read_data[7:0]}};
 				else Reg[rt]<=32'b0;
 			end
 			`opcode_LW:begin
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 				if(rt!=0)
 				Reg[rt]<=ext_ram_read_data;
 				else Reg[rt]<=32'b0;
 			end
 			`opcode_SB:begin
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 			end
 			`opcode_SW:begin
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 			end
 			
 			`opcode_MUL :begin
@@ -272,12 +272,12 @@ always @(posedge clk) begin
 						if(rd!=0)
 						Reg[rd]<=Reg[rs]*Reg[rt];
 						else Reg[rd]<=32'b0;
-						brunch_flag<=0;
-						brunch_address<=`ZeroWord;
+						branch_flag<=0;
+						branch_address<=`ZeroWord;
 					end
 					default:begin
-						brunch_address<=`ZeroWord;
-					   brunch_flag<=0;
+						branch_address<=`ZeroWord;
+					   branch_flag<=0;
 					end
 				endcase
 			end
@@ -285,60 +285,60 @@ always @(posedge clk) begin
 				
 				case(func)
 					`func_ADDU:begin
-					   brunch_flag<=0;
-					   brunch_address<=`ZeroWord;
+					   branch_flag<=0;
+					   branch_address<=`ZeroWord;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rs]+Reg[rt];
 						else Reg[rd]<=32'b0;
 					end
 					`func_XOR:begin
-					   brunch_flag<=0;
-					   brunch_address<=`ZeroWord;
+					   branch_flag<=0;
+					   branch_address<=`ZeroWord;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rs]^Reg[rt];
 						else Reg[rd]<=32'b0;
 					end
 					`func_AND:begin
-					   brunch_flag<=0;
-					   brunch_address<=`ZeroWord;
+					   branch_flag<=0;
+					   branch_address<=`ZeroWord;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rs]&Reg[rt];
 						else Reg[rd]<=32'b0;
 					end
 					`func_OR:begin
-					   brunch_flag<=0;
-					   brunch_address<=`ZeroWord;
+					   branch_flag<=0;
+					   branch_address<=`ZeroWord;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rs]|Reg[rt];
 						else Reg[rd]<=32'b0;
 					end
 					`func_SLL:begin
-					   brunch_flag<=0;
-					   brunch_address<=`ZeroWord;
+					   branch_flag<=0;
+					   branch_address<=`ZeroWord;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rt]<<sa;
 						else Reg[rd]<=32'b0;
 					end
 					`func_SRL:begin
-					   brunch_flag<=0;
-					   brunch_address<=`ZeroWord;
+					   branch_flag<=0;
+					   branch_address<=`ZeroWord;
 					   if(rd!=0)
 						Reg[rd]<=Reg[rt]>>sa;
 						else Reg[rd]<=32'b0;
 					end			
                     `func_JR:begin
-                        brunch_flag<=1;
-                        brunch_address<=Reg[rs];
+                        branch_flag<=1;
+                        branch_address<=Reg[rs];
 			         end
 					default:begin
-					   brunch_flag<=0;
-					   brunch_address<=`ZeroWord;
+					   branch_flag<=0;
+					   branch_address<=`ZeroWord;
 					end
 				endcase
 			end
 			default:begin
-				brunch_flag<=0;
-				brunch_address<=`ZeroWord;
+				branch_flag<=0;
+				branch_address<=`ZeroWord;
 			end
 		endcase
 	end
@@ -348,7 +348,7 @@ always @(posedge clk) begin
 	if(rst==`Ena) pc<=`ZeroWord;
 	else if(stall) begin
 		pc<=pc;
-	end else if(brunch_flag) pc<=brunch_address;
+	end else if(branch_flag) pc<=branch_address;
 	else pc<=pc+4;
 end
 

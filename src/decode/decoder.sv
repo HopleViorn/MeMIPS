@@ -478,6 +478,30 @@ always_comb begin
 
                     is_o.shift_left=`true;
                 end
+                `op_Special_AND:begin
+                    is_o.num1_need=`true;
+                    is_o.num1=32'b0;
+                    is_o.num1_addr=rs;
+                    is_o.num2_need=`true;
+                    is_o.num2=32'b0;
+                    is_o.num2_addr=rt;
+                    is_o.accept_mask=3'b111;
+                    
+                    is_o.exe_type=arithmatic;
+                    is_o.alu_op=alu_and;
+                    is_o.branch_type=nbc;
+                    is_o.llu_op=llu_nop;
+                    is_o.memory_addr_offset=32'b0;
+
+                    is_o.mem_write_ena=`false;
+                    is_o.mem_read_ena=`false;
+                    is_o.mem_type=wrd;
+
+                    is_o.write_reg_need=`true;
+                    is_o.write_reg_addr=rd;
+
+                    is_o.shift_left=`true;
+                end
                 `op_Special_XOR:begin
                     is_o.num1_need=`true;
                     is_o.num1=32'b0;

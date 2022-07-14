@@ -5,6 +5,7 @@ module MirrorLake(
     input bool rst_n,
 
     input REG_WIDTH base_ram_data_in,
+    output REG_WIDTH base_ram_data_out,
     output REG_WIDTH base_ram_addr,
     output logic[3:0] base_ram_be_n,
     output logic base_ram_we,
@@ -79,7 +80,7 @@ sram_interface dcache_interface();
 crossbar crossbar0(
     .clk,.rst,
 
-    .base_ram_data_in,.base_ram_addr,
+    .base_ram_data_in,.base_ram_data_out,.base_ram_addr,
     .base_ram_be_n,.base_ram_we,
 
     .ext_ram_data_in,.ext_ram_data_out,.ext_ram_addr,

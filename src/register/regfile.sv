@@ -13,7 +13,7 @@ module regfile(
 wire rst=~rst_n;
 
 
-logic[31:0] regs [0:31];
+(*mark_debug="true"*) logic[31:0] regs [0:31];
 
 assign number=regs[16];
 

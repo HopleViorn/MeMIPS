@@ -10,3 +10,10 @@ connect_debug_port u_ila_1/probe0 [get_nets [list MirrorLake0/rst_n]]
 
 
 
+
+
+
+
+
+
+

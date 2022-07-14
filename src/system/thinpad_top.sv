@@ -179,6 +179,7 @@ assign ext_ram_ce_n=0;
 MirrorLake MirrorLake0(
     .clk(clk_MMCM),.rst_n(~rst),
     .base_ram_data_in,
+    .base_ram_data_out,
     .base_ram_addr,
     .base_ram_be_n,
     .base_ram_we,

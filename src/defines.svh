@@ -2,6 +2,7 @@
 `define nuclear
 
 `define SIMULATION
+`define CPU_clk 55000000
 
 `define true 1'b1
 `define false 1'b0

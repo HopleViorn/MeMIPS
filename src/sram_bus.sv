@@ -65,12 +65,13 @@ module crossbar(
     input wire clk,rst,
 
     sram_interface.slave_r icache,
-    sram_interface.slave_rw dcache,
+   (*mark_debug="true"*) sram_interface.slave_rw dcache,
 
-    input REG_WIDTH base_ram_data_in,
-    output REG_WIDTH base_ram_addr,
-    output logic[3:0] base_ram_be_n,
-    output logic base_ram_we,
+    (*mark_debug="true"*)input REG_WIDTH base_ram_data_in,
+    (*mark_debug="true"*)output REG_WIDTH base_ram_addr,
+    (*mark_debug="true"*)output REG_WIDTH base_ram_data_out,
+    (*mark_debug="true"*)output logic[3:0] base_ram_be_n,
+    (*mark_debug="true"*)output logic base_ram_we,
 
     input REG_WIDTH ext_ram_data_in,
     output REG_WIDTH ext_ram_data_out,
@@ -119,7 +120,7 @@ reg ext_uart_start, ext_uart_avai;
 
 assign number={3'b0,ext_uart_clear,ext_uart_avai,ext_uart_ready,ext_uart_busy,ext_uart_start};
 
-async_receiver #(.ClkFrequency(50000000),.Baud(9600)) //接收模块，9600无检验位
+async_receiver #(.ClkFrequency(`CPU_clk),.Baud(9600)) //接收模块，9600无检验位
     ext_uart_r(
         .clk(clk),                       //外部时钟信号
         .RxD(rxd),                           //外部串行信号输入
@@ -128,7 +129,7 @@ async_receiver #(.ClkFrequency(50000000),.Baud(9600)) //接收模块，9600无�
         .RxD_data(ext_uart_rx)             //接收到的一字节数据
     );
 
-async_transmitter #(.ClkFrequency(50000000),.Baud(9600)) //发送模块，9600无检验位
+async_transmitter #(.ClkFrequency(`CPU_clk),.Baud(9600)) //发送模块，9600无检验位
     ext_uart_t(
         .clk(clk),                  //外部时钟信号
         .TxD(txd),                      //串行信号输出
@@ -207,15 +208,18 @@ always_ff @(posedge clk) begin
         base_ram_be_n<=4'b0;
         base_ram_we<=0;
         base_ram_addr<=20'b0;
+        base_ram_data_out<=32'b0;
     end else begin
         if(dcache.req&is_base_ram[0]) begin
             base_ram_be_n<=dcache_be_n;
             base_ram_we<=dcache.we;
             base_ram_addr<=dcache.addr[21:2];
+            base_ram_data_out<=tmp_dout;
         end else begin
             base_ram_be_n<=4'b0;
             base_ram_we<=0;
             base_ram_addr<=icache.addr[21:2];
+            base_ram_data_out<=32'b0;
         end
     end
 end

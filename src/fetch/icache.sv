@@ -72,7 +72,9 @@ always_ff @( posedge clk ) begin
         end
     end
 end
-
+//8010 0000
+//100 16{0}
+//0x40000
 always_comb begin
     if(rst) begin
         we=0;
